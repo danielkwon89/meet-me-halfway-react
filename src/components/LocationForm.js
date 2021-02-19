@@ -18,12 +18,13 @@ export default class LocationForm extends Component {
     }
 
     handleSubmit = event => {
+        debugger
         event.preventDefault()
         console.log(this.state)
     }
 
-    getLocation = (event) => {
-        // stopPropagation is not working as it's still triggering handleSubmit
+    getLocation = event => {
+        event.preventDefault()
         event.stopPropagation()
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(this.getCoordinates, this.showError);
@@ -33,7 +34,10 @@ export default class LocationForm extends Component {
     }
 
     getCoordinates = (position) => {
-        console.log(position.coords.latitude, position.coords.longitude)
+        this.setState({
+            ...this.state,
+            location_1: `Latitude: ${position.coords.latitude}, Longitude: ${position.coords.longitude}`
+        })
     }
 
     showError = error => {
@@ -60,10 +64,7 @@ export default class LocationForm extends Component {
                 <form onSubmit={this.handleSubmit}>
                     <label>Location 1: </label><br />
                     <input type="text" name="location_1" onChange={this.handleChange} value={this.state.location_1} /><br />
-
-                    {/* Unsure if this.getLocation is functional as browser is blocking geolocation functionality */}
-                    <button onClick={this.getLocation}>Get Current Location</button><br />
-
+                    <button onClick={this.getLocation.bind(this)}>Get Current Location</button><br />
                     <label>Location 2: </label><br />
                     <input type="text" name="location_2" onChange={this.handleChange} value={this.state.location_2} /><br />
                     <label>Point of Interest: </label><br />
