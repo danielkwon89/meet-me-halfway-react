@@ -1,4 +1,8 @@
 import React, { Component } from 'react';
+import Geocode from 'react-geocode';
+
+Geocode.setApiKey(`${process.env.REACT_APP_API_KEY}`);
+Geocode.enableDebug();
 
 export default class LocationForm extends Component {
 
@@ -34,10 +38,18 @@ export default class LocationForm extends Component {
     }
 
     getCoordinates = (position) => {
-        this.setState({
-            ...this.state,
-            location_1: `Latitude: ${position.coords.latitude}, Longitude: ${position.coords.longitude}`
-        })
+        Geocode.fromLatLng(position.coords.latitude, position.coords.longitude).then(
+            (response) => {
+              const address = response.results[0].formatted_address;
+              this.setState({
+                ...this.state,
+                location_1: address
+              })
+            },
+            (error) => {
+              console.error(error);
+            }
+        );
     }
 
     showError = error => {
@@ -54,6 +66,8 @@ export default class LocationForm extends Component {
           case error.UNKNOWN_ERROR:
             alert("An unknown error occurred.")
             break;
+          default:
+            alert("An unknown error occurred.")
         }
     }
       
