@@ -27,7 +27,7 @@ export default class LocationForm extends Component {
             <div>
                 <form onSubmit={this.handleSubmit} >
                     <label>Location 1: </label><br />
-                    <input type="text" name="location_1" onChange={this.handleChange} value={this.state.location_1} /><br />
+                    <input type="text" name="location_1" onChange={this.handleChange} value={this.state.location_1} /><br /><button>Get Current Location</button><br />
                     <label>Location 2: </label><br />
                     <input type="text" name="location_2" onChange={this.handleChange} value={this.state.location_2} /><br />
                     <label>Point of Interest: </label><br />
