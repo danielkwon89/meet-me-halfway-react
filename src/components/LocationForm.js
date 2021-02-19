@@ -6,7 +6,8 @@ export default class LocationForm extends Component {
         super(props)
         this.state = {
             location_1: "location 1",
-            location_2: "location 2"
+            location_2: "location 2",
+            point_of_interest: "e.g. coffee"
         }
     }
 
@@ -29,6 +30,8 @@ export default class LocationForm extends Component {
                     <input type="text" name="location_1" onChange={this.handleChange} value={this.state.location_1} /><br />
                     <label>Location 2: </label><br />
                     <input type="text" name="location_2" onChange={this.handleChange} value={this.state.location_2} /><br />
+                    <label>Point of Interest: </label><br />
+                    <input type="text" name="point_of_interest" onChange={this.handleChange} value={this.state.point_of_interest} /><br />
                     <input type="submit" value="Find Places!" />
                 </form>
             </div>
