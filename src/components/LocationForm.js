@@ -78,6 +78,7 @@ export default class LocationForm extends Component {
                 <form onSubmit={this.handleSubmit}>
                     <label>Location 1: </label><br />
                     <input type="text" name="location_1" onChange={this.handleChange} value={this.state.location_1} /><br />
+                    {/* button uses react-geocode package to convert coordinates to a stret address */}
                     <button onClick={this.getLocation.bind(this)}>Get Current Location</button><br />
                     <label>Location 2: </label><br />
                     <input type="text" name="location_2" onChange={this.handleChange} value={this.state.location_2} /><br />
