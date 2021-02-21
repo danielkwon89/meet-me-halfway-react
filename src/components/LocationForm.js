@@ -1,17 +1,19 @@
 import React, { Component } from 'react';
 import Geocode from 'react-geocode';
+import { connect } from 'react-redux';
 
 Geocode.setApiKey(`${process.env.REACT_APP_API_KEY}`);
 Geocode.enableDebug();
 
-export default class LocationForm extends Component {
+class LocationForm extends Component {
 
     constructor(props){
         super(props)
         this.state = {
-            location_1: "location 1",
-            location_2: "location 2",
-            point_of_interest: "e.g. coffee"
+            firstAddress: "",
+            secondAddress: "",
+            pointOfInterest: "e.g. coffee",
+            transitMode: "driving"
         }
     }
 
@@ -22,9 +24,10 @@ export default class LocationForm extends Component {
     }
 
     handleSubmit = event => {
-        debugger
         event.preventDefault()
         console.log(this.state)
+        debugger
+        this.props.findMidpoint(this.state)
     }
 
     getLocation = event => {
@@ -43,7 +46,7 @@ export default class LocationForm extends Component {
               const address = response.results[0].formatted_address;
               this.setState({
                 ...this.state,
-                location_1: address
+                firstAddress: address
               })
             },
             (error) => {
@@ -76,17 +79,25 @@ export default class LocationForm extends Component {
         return (
             <div>
                 <form onSubmit={this.handleSubmit}>
-                    <label>Location 1: </label><br />
-                    <input type="text" name="location_1" onChange={this.handleChange} value={this.state.location_1} /><br />
-                    {/* button uses react-geocode package to convert coordinates to a stret address */}
+                    <label>First Address: </label><br />
+                    <input type="text" name="firstAddress" onChange={this.handleChange} value={this.state.firstAddress} /><br />
+                    {/* button uses react-geocode package to convert coordinates to a street address */}
                     <button onClick={this.getLocation.bind(this)}>Get Current Location</button><br />
-                    <label>Location 2: </label><br />
-                    <input type="text" name="location_2" onChange={this.handleChange} value={this.state.location_2} /><br />
+                    <label>Second Address: </label><br />
+                    <input type="text" name="secondAddress" onChange={this.handleChange} value={this.state.secondAddress} /><br />
                     <label>Point of Interest: </label><br />
-                    <input type="text" name="point_of_interest" onChange={this.handleChange} value={this.state.point_of_interest} /><br />
+                    <input type="text" name="pointOfInterest" onChange={this.handleChange} value={this.state.point_of_interest} /><br />
                     <input type="submit" value="Find Places!" />
                 </form>
             </div>
         )
     }
 }
+
+const mapDispatchToProps = dispatch => {
+    return {
+        findMidpoint: (state) => dispatch({ type: 'FIND_MIDPOINT', state })
+    }
+}
+
+export default connect(null, mapDispatchToProps)(LocationForm)
