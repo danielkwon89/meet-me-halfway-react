@@ -26,7 +26,6 @@ class LocationForm extends Component {
     handleSubmit = event => {
         event.preventDefault()
         console.log(this.state)
-        debugger
         this.props.findMidpoint(this.state)
     }
 

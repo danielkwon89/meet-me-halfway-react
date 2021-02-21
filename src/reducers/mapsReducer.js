@@ -2,7 +2,6 @@ export default function mapsReducer(state = {firstAddress: "", secondAddress: ""
     switch (action.type) {
 
         case "FIND_MIDPOINT":
-            debugger
             return {
                 ...state,
                 firstAddress: action.state.firstAddress,
