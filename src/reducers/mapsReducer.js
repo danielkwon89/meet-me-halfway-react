@@ -1,7 +1,7 @@
-export default function mapsReducer(state = {firstAddress: "", secondAddress: "", transitMode: "driving", pointOfInterest: "restaurant"}, action) {
+export default function mapsReducer(state = {firstAddress: "", secondAddress: "", transitMode: "driving", pointOfInterest: "cafe"}, action) {
     switch (action.type) {
 
-        case "FIND_MIDPOINT":
+        case "ADD_ADDRESSES":
             return {
                 ...state,
                 firstAddress: action.state.firstAddress,

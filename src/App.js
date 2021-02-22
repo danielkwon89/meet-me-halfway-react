@@ -1,28 +1,30 @@
 import './App.css';
-import { BrowserRouter as Router, Switch, Route, Link, NavLink } from 'react-router-dom';
-import MapContainer from './containers/MapContainer';
+import { BrowserRouter as Router, Route, NavLink } from 'react-router-dom';
 import Homepage from './components/Homepage';
 import About from './components/About';
-import Directions from './actions/Directions';
+import React, { Component } from 'react';
+import MapContainer from './containers/MapContainer';
 
-function App() {
-  return (
-    <Router>
-      <div>
-        <ul className="navbar">
-          <li><NavLink to="/">Home</NavLink></li>
-          <li><NavLink to="/about">About Us</NavLink></li>
-          <li><NavLink to="/directions">Directions</NavLink></li>
-        </ul>
-        <div className="content">
-          <Route exact path="/" component={Homepage} />
-          <Route path="/about" component={About} />
-          <Route path="/map" component={MapContainer} />
-          <Route path="/directions" component={Directions} />
+const API_KEY = `${process.env.REACT_APP_API_KEY}`
+
+class App extends Component {
+  render() {
+    return (
+      <Router>
+        <div>
+          <ul className="navbar">
+            <li><NavLink to="/">Home</NavLink></li>
+            <li><NavLink to="/about">About Us</NavLink></li>
+          </ul>
+          <div className="content">
+            <Route exact path="/" component={Homepage} />
+            <Route path="/about" component={About} />
+            <Route path="/map" component={MapContainer} />
+          </div>
         </div>
-      </div>
-    </Router>
-  );
+      </Router>
+    );
+  }
 }
 
 export default App;

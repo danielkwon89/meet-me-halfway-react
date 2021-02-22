@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
 import Geocode from 'react-geocode';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 
 Geocode.setApiKey(`${process.env.REACT_APP_API_KEY}`);
 Geocode.enableDebug();
+
+// add Place Autocomplete API for address input on the form
 
 class LocationForm extends Component {
 
@@ -12,7 +15,7 @@ class LocationForm extends Component {
         this.state = {
             firstAddress: "",
             secondAddress: "",
-            pointOfInterest: "e.g. coffee",
+            pointOfInterest: "coffee",
             transitMode: "driving"
         }
     }
@@ -25,8 +28,8 @@ class LocationForm extends Component {
 
     handleSubmit = event => {
         event.preventDefault()
-        console.log(this.state)
-        this.props.findMidpoint(this.state)
+        this.props.addAddresses(this.state)
+        this.props.history.push('./map')
     }
 
     getLocation = event => {
@@ -39,7 +42,7 @@ class LocationForm extends Component {
         }
     }
 
-    getCoordinates = (position) => {
+    getCoordinates = position => {
         Geocode.fromLatLng(position.coords.latitude, position.coords.longitude).then(
             (response) => {
               const address = response.results[0].formatted_address;
@@ -80,12 +83,14 @@ class LocationForm extends Component {
                 <form onSubmit={this.handleSubmit}>
                     <label>First Address: </label><br />
                     <input type="text" name="firstAddress" onChange={this.handleChange} value={this.state.firstAddress} /><br />
-                    {/* button uses react-geocode package to convert coordinates to a street address */}
                     <button onClick={this.getLocation.bind(this)}>Get Current Location</button><br />
                     <label>Second Address: </label><br />
                     <input type="text" name="secondAddress" onChange={this.handleChange} value={this.state.secondAddress} /><br />
                     <label>Point of Interest: </label><br />
-                    <input type="text" name="pointOfInterest" onChange={this.handleChange} value={this.state.point_of_interest} /><br />
+                    <input type="text" name="pointOfInterest" onChange={this.handleChange} value={this.state.pointOfInterest} /><br />
+                    <label>Travel Mode: </label><br />
+                    {/* turn travel mode input type from text to a clickable list */}
+                    <input type="text" name="transitMode" onChange={this.handleChange} value={this.state.transitMode} /><br />
                     <input type="submit" value="Find Places!" />
                 </form>
             </div>
@@ -95,8 +100,8 @@ class LocationForm extends Component {
 
 const mapDispatchToProps = dispatch => {
     return {
-        findMidpoint: (state) => dispatch({ type: 'FIND_MIDPOINT', state })
+        addAddresses: (state) => dispatch({ type: 'ADD_ADDRESSES', state })
     }
 }
 
-export default connect(null, mapDispatchToProps)(LocationForm)
+export default withRouter(connect(null, mapDispatchToProps)(LocationForm))
