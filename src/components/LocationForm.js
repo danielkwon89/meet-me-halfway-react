@@ -16,7 +16,7 @@ class LocationForm extends Component {
             firstAddress: "",
             secondAddress: "",
             pointOfInterest: "coffee",
-            transitMode: "driving"
+            transitMode: "DRIVING"
         }
     }
 

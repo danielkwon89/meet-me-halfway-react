@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
-import { withScriptjs, withGoogleMap, GoogleMap, Marker } from "react-google-maps";
+import { withScriptjs, withGoogleMap, GoogleMap, Marker, Polyline, DirectionsRenderer } from "react-google-maps";
+// import { DirectionsService } from '@react-google-maps/api';
 import { connect } from 'react-redux';
 import Geocode from 'react-geocode';
+
+var polyline = require( 'google-polyline' )
 
 const API_KEY = `${process.env.REACT_APP_API_KEY}`
 
@@ -14,9 +17,9 @@ class Map extends Component {
 
     directionsEndpoint = "";
 
+    // rewrite convertAddressToGeocode to get geocodes for both addresses then fetch the overview polyline once the geocodes resolve into values
     convertAddressToGeocode = (address, variable) => {
-        Geocode.fromAddress(address).then(
-            (response) => {
+        Geocode.fromAddress(address).then((response) => {
               const { lat, lng } = response.results[0].geometry.location;
               this.setState({
                   ...this.state,
@@ -26,7 +29,7 @@ class Map extends Component {
             (error) => {
               console.error(error);
             }
-        );
+        )
     }
 
     componentDidMount() {
@@ -35,19 +38,29 @@ class Map extends Component {
     }
 
     componentDidUpdate() {
-        // this.directionsEndpoint = `https://maps.googleapis.com/maps/api/directions/json?origin=${this.state.firstGeocode.lat},${this.state.firstGeocode.lng}&destination=${this.state.secondGeocode.lat},${this.state.secondGeocode.lng}&mode=${this.props.transitMode}&key=${API_KEY}`
-        // console.log(this.directionsEndpoint)
+        const DirectionsService = new window.google.maps.DirectionsService();
 
-        // const bounds = new window.google.maps.LatLngBounds()
-        // bounds.extend(new window.google.maps.LatLng(
-        //     this.state.firstGeocode.lat,
-        //     this.state.firstGeocode.lng
-        // ))
-        // bounds.extend(new window.google.maps.LatLng(
-        //     this.state.secondeocode.lat,
-        //     this.state.secondGeocode.lng
-        // ))
-        // this.ref.map.fitBounds(bounds)
+        if (this.state.firstGeocode !== "" && this.state.secondGeocode !== "") {
+
+            DirectionsService.route({
+                origin: new window.google.maps.LatLng(parseFloat(this.state.firstGeocode.lat), parseFloat(this.state.firstGeocode.lng)),
+                destination: new window.google.maps.LatLng(parseFloat(this.state.secondGeocode.lat), parseFloat(this.state.secondGeocode.lng)),
+                travelMode: window.google.maps.TravelMode.DRIVING
+            }, (result, status) => {
+                if (status === window.google.maps.DirectionsStatus.OK) {
+                    this.setState({
+                        ...this.state,
+                        overview_polyline: polyline.decode(result.routes[0].overview_polyline).map(arr => {
+                            return { lat: arr[0], lng: arr[1] }
+                       })
+                    });
+                } else {
+                    console.error(`error fetching directions ${result}`);
+                }
+            });
+    
+            console.log(this.state)
+        }
     }
 
     handleMapMounted = (map) => {
@@ -75,6 +88,15 @@ class Map extends Component {
               />
               <Marker
                 position={this.state.secondGeocode}
+              />
+              <Polyline 
+                path={this.state.overview_polyline}
+                options={{
+                    geodesic: true,
+                    strokeColor: '#669DF6',
+                    strokeOpacity: 1.0,
+                    strokeWeight: 5
+                }}
               />
             </GoogleMap>
             )
