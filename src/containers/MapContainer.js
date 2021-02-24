@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import Map from '../components/Map';
+import { connect } from 'react-redux';
+import Geocode from 'react-geocode';
 
-export default class MapContainer extends Component {
+class MapContainer extends Component {
+
     render() {
         return (
             <div>
@@ -11,3 +14,5 @@ export default class MapContainer extends Component {
         )
     }
 }
+
+export default MapContainer
