@@ -1443,6 +1443,11 @@
     "@types/yargs" "^15.0.0"
     "chalk" "^4.0.0"
 
+"@mapbox/polyline@^0.2.0":
+  "integrity" "sha1-biWYB0SqIjMflLZFpULALT/P7pc="
+  "resolved" "https://registry.npmjs.org/@mapbox/polyline/-/polyline-0.2.0.tgz"
+  "version" "0.2.0"
+
 "@nodelib/fs.scandir@2.1.4":
   "integrity" "sha512-33g3pMJk3bg5nXbL/+CY6I2eJDzZAni49PfJnL5fghPTggPvBd/pFNSgJsdAgWptuFu7qq/ERvOYFlhvsLTCKA=="
   "resolved" "https://registry.yarnpkg.com/@nodelib/fs.scandir/-/fs.scandir-2.1.4.tgz"
@@ -1679,6 +1684,63 @@
   "version" "12.7.1"
   dependencies:
     "@babel/runtime" "^7.12.5"
+
+"@turf/along@^4.3.0":
+  "integrity" "sha1-pJgfJUzH8Ko3E77i51X+81BrhRg="
+  "resolved" "https://registry.npmjs.org/@turf/along/-/along-4.7.3.tgz"
+  "version" "4.7.3"
+  dependencies:
+    "@turf/bearing" "^4.7.3"
+    "@turf/destination" "^4.7.3"
+    "@turf/distance" "^4.7.3"
+    "@turf/helpers" "^4.7.3"
+
+"@turf/bearing@^4.7.3":
+  "integrity" "sha1-79GopcjKDNvsvMAhcsQe0hbf+Pk="
+  "resolved" "https://registry.npmjs.org/@turf/bearing/-/bearing-4.7.3.tgz"
+  "version" "4.7.3"
+  dependencies:
+    "@turf/invariant" "^4.7.3"
+
+"@turf/destination@^4.7.3":
+  "integrity" "sha1-8eo7s3Bc9S/tE1p5F9STNuR7jS4="
+  "resolved" "https://registry.npmjs.org/@turf/destination/-/destination-4.7.3.tgz"
+  "version" "4.7.3"
+  dependencies:
+    "@turf/helpers" "^4.7.3"
+    "@turf/invariant" "^4.7.3"
+
+"@turf/distance@^4.7.3":
+  "integrity" "sha1-tatIoJpkJwbWXDm5GUM9XSzFcbE="
+  "resolved" "https://registry.npmjs.org/@turf/distance/-/distance-4.7.3.tgz"
+  "version" "4.7.3"
+  dependencies:
+    "@turf/helpers" "^4.7.3"
+    "@turf/invariant" "^4.7.3"
+
+"@turf/helpers@^4.3.0", "@turf/helpers@^4.7.3":
+  "integrity" "sha1-vDEqxDyrPFMqSDFRxMOCxWSUKek="
+  "resolved" "https://registry.npmjs.org/@turf/helpers/-/helpers-4.7.3.tgz"
+  "version" "4.7.3"
+
+"@turf/invariant@^4.7.3":
+  "integrity" "sha1-U482fSPBE/yEnXDJpSS4Vjh0YB0="
+  "resolved" "https://registry.npmjs.org/@turf/invariant/-/invariant-4.7.3.tgz"
+  "version" "4.7.3"
+
+"@turf/line-distance@^4.3.0":
+  "integrity" "sha1-AKMwAOCI7l46jZK3uWuzMq83MAY="
+  "resolved" "https://registry.npmjs.org/@turf/line-distance/-/line-distance-4.7.3.tgz"
+  "version" "4.7.3"
+  dependencies:
+    "@turf/distance" "^4.7.3"
+    "@turf/helpers" "^4.7.3"
+    "@turf/meta" "^4.7.3"
+
+"@turf/meta@^4.7.3":
+  "integrity" "sha1-beLx6YkLj2S2aeS0fAmyCJMGOXc="
+  "resolved" "https://registry.npmjs.org/@turf/meta/-/meta-4.7.4.tgz"
+  "version" "4.7.4"
 
 "@types/anymatch@*":
   "integrity" "sha512-/+CRPXpBDpo2RK9C68N3b2cOvO0Cf5B9aPijHsoDQTHivnGSObdOF2BRQOYjojWTDy6nQvMjmqRXIxH55VjxxA=="
@@ -8409,6 +8471,16 @@
   "version" "1.6.4"
   dependencies:
     "ts-pnp" "^1.1.6"
+
+"polyline-midpoint@^1.0.0":
+  "integrity" "sha1-SBQrRKc4RDBtORhaBPv/in+TS5Y="
+  "resolved" "https://registry.npmjs.org/polyline-midpoint/-/polyline-midpoint-1.0.0.tgz"
+  "version" "1.0.0"
+  dependencies:
+    "@mapbox/polyline" "^0.2.0"
+    "@turf/along" "^4.3.0"
+    "@turf/helpers" "^4.3.0"
+    "@turf/line-distance" "^4.3.0"
 
 "portfinder@^1.0.26":
   "integrity" "sha512-Se+2isanIcEqf2XMHjyUKskczxbPH7dQnlMjXX6+dybayyHvAf/TCgyMRlzf/B6QDhAEFOGes0pzRo3by4AbMA=="

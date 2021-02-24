@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import Geocode from 'react-geocode';
 
 var polyline = require( 'google-polyline' )
+var midpoint = require('polyline-midpoint')
 
 const API_KEY = `${process.env.REACT_APP_API_KEY}`
 
@@ -18,7 +19,7 @@ class Map extends Component {
 
         Geocode.fromAddress(firstAddress).then(response => {
             const { lat, lng } = response.results[0].geometry.location
-            
+
             firstCoordinates = {lat: lat, lng: lng}
 
             Geocode.fromAddress(secondAddress).then(response => {
@@ -26,33 +27,36 @@ class Map extends Component {
 
                 secondCoordinates = {lat: lat, lng: lng}
 
-                this.setState({
-                    ...this.state,
-                    firstGeocode: firstCoordinates,
-                    secondGeocode: secondCoordinates
-                })
-
                 const DirectionsService = new window.google.maps.DirectionsService();
 
-                if (this.state.firstGeocode && this.state.secondGeocode) {
-        
-                    DirectionsService.route({
-                        origin: new window.google.maps.LatLng(parseFloat(this.state.firstGeocode.lat), parseFloat(this.state.firstGeocode.lng)),
-                        destination: new window.google.maps.LatLng(parseFloat(this.state.secondGeocode.lat), parseFloat(this.state.secondGeocode.lng)),
-                        travelMode: window.google.maps.TravelMode.DRIVING
-                    }, (result, status) => {
-                        if (status === window.google.maps.DirectionsStatus.OK) {
-                            this.setState({
-                                ...this.state,
-                                overview_polyline: polyline.decode(result.routes[0].overview_polyline).map(arr => {
-                                    return { lat: arr[0], lng: arr[1] }
-                               })
+                DirectionsService.route({
+
+                    origin: new window.google.maps.LatLng(firstCoordinates.lat, firstCoordinates.lng),
+                    destination: new window.google.maps.LatLng(secondCoordinates.lat, secondCoordinates.lng),
+                    travelMode: window.google.maps.TravelMode.DRIVING
+
+                }, (result, status) => {
+
+                    if (status === window.google.maps.DirectionsStatus.OK) {
+
+                        const midpointArr = midpoint(result.routes[0].overview_polyline).geometry.coordinates
+
+                        this.setState({
+                            ...this.state,
+                            firstGeocode: firstCoordinates,
+                            secondGeocode: secondCoordinates,
+                            polylineMidpoint: {lat: midpointArr[1], lng: midpointArr[0]},
+                            polylineCoordinates: polyline.decode(result.routes[0].overview_polyline).map(arr => {
+                                return { lat: arr[0], lng: arr[1] }
                             })
-                        } else {
-                            console.error(`error fetching directions ${result}`);
-                        }
-                    })
-                }
+                        })
+
+                        console.log(this.state)
+
+                    } else {
+                        console.error(`error fetching directions ${result}`);
+                    }
+                })
             })
         },
           (error) => {
@@ -73,7 +77,7 @@ class Map extends Component {
 
           bounds.extend(this.state.firstGeocode)
           bounds.extend(this.state.secondGeocode)
-          
+
           this._map.fitBounds(bounds)
         }
     }
@@ -92,8 +96,11 @@ class Map extends Component {
               <Marker
                 position={this.state.secondGeocode}
               />
+              <Marker 
+                position={this.state.polylineMidpoint}
+              />
               <Polyline 
-                path={this.state.overview_polyline}
+                path={this.state.polylineCoordinates}
                 options={{
                     geodesic: true,
                     strokeColor: '#669DF6',

@@ -14,7 +14,7 @@ class LocationForm extends Component {
         super(props)
         this.state = {
             firstAddress: "",
-            secondAddress: "UCLA",
+            secondAddress: "Columbia University",
             pointOfInterest: "coffee",
             transitMode: "DRIVING"
         }
