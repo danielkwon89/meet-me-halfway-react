@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { withScriptjs, withGoogleMap, GoogleMap, Marker, Polyline, DirectionsRenderer } from "react-google-maps";
 import { connect } from 'react-redux';
 import Geocode from 'react-geocode';
+import midpointIcon from '../midpoint.png'
 
 var polyline = require( 'google-polyline' )
 var midpoint = require('polyline-midpoint')
@@ -97,6 +98,7 @@ class Map extends Component {
                 position={this.state.secondGeocode}
               />
               <Marker 
+                icon={midpointIcon}
                 position={this.state.polylineMidpoint}
               />
               <Polyline 
