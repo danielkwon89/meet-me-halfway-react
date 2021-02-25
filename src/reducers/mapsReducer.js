@@ -1,4 +1,4 @@
-export default function mapsReducer(state = {firstAddress: "", secondAddress: "", transitMode: "driving", pointOfInterest: "cafe"}, action) {
+export default function mapsReducer(state = {firstAddress: "", secondAddress: "", transitMode: "driving", pointOfInterest: "cafe", businesses: []}, action) {
     switch (action.type) {
 
         case "ADD_ADDRESSES":

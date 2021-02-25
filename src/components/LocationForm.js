@@ -2,6 +2,15 @@ import React, { Component } from 'react';
 import Geocode from 'react-geocode';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+import Button from '@material-ui/core/Button';
+import Input from '@material-ui/core/Input';
+import MyLocationIcon from '@material-ui/icons/MyLocation';
+import IconButton from '@material-ui/core/IconButton';
+import TextField from '@material-ui/core/TextField';
+import Select from '@material-ui/core/Select';
+import FormControl from '@material-ui/core/FormControl';
+import MenuItem from '@material-ui/core/MenuItem';
+import InputLabel from '@material-ui/core/InputLabel';
 
 Geocode.setApiKey(`${process.env.REACT_APP_API_KEY}`);
 Geocode.enableDebug();
@@ -14,15 +23,22 @@ class LocationForm extends Component {
         super(props)
         this.state = {
             firstAddress: "",
-            secondAddress: "Columbia University",
-            pointOfInterest: "coffee",
-            transitMode: "DRIVING"
+            secondAddress: "",
+            pointOfInterest: "",
+            transitMode: ""
         }
     }
 
     handleChange = event => {
+        console.log(event.target.name)
         this.setState({
             [event.target.name]: event.target.value
+        })
+    }
+
+    handleSelect = event => {
+        this.setState({
+            transitMode: event.target.value
         })
     }
 
@@ -81,17 +97,68 @@ class LocationForm extends Component {
         return (
             <div>
                 <form onSubmit={this.handleSubmit}>
-                    <label>First Address: </label><br />
-                    <input type="text" name="firstAddress" onChange={this.handleChange} value={this.state.firstAddress} /><br />
-                    <button onClick={this.getLocation.bind(this)}>Get Current Location</button><br />
-                    <label>Second Address: </label><br />
-                    <input type="text" name="secondAddress" onChange={this.handleChange} value={this.state.secondAddress} /><br />
-                    <label>Point of Interest: </label><br />
-                    <input type="text" name="pointOfInterest" onChange={this.handleChange} value={this.state.pointOfInterest} /><br />
-                    <label>Travel Mode: </label><br />
-                    {/* turn travel mode input type from text to a clickable list */}
-                    <input type="text" name="transitMode" onChange={this.handleChange} value={this.state.transitMode} /><br />
-                    <input type="submit" value="Find Places!" />
+                    <TextField 
+                    id="outlined-helperText" 
+                    label="First Address" 
+                    variant="outlined"
+                    margin="normal"
+                    name="firstAddress"
+                    onChange={this.handleChange} 
+                    value={this.state.firstAddress} 
+                    />
+
+                    <IconButton 
+                    variant="contained" 
+                    color="secondary" 
+                    onClick={this.getLocation.bind(this)}>
+                        <MyLocationIcon />
+                    </IconButton><br />
+
+                    <TextField 
+                    id="outlined-helperText" 
+                    label="Second Address" 
+                    variant="outlined"
+                    margin="normal" 
+                    name="secondAddress"
+                    onChange={this.handleChange} 
+                    value={this.state.secondAddress} /><br />
+                    
+                    <TextField 
+                    id="outlined-helperText" 
+                    label="Point of Interest" 
+                    variant="outlined"
+                    margin="normal"
+                    name="pointOfInterest"
+                    helperText="(e.g. Coffee, Hotel, Restaurant) Leave blank if none." 
+                    onChange={this.handleChange} 
+                    value={this.state.pointOfInterest} /><br />
+
+                    <FormControl
+                    variant="filled"
+                    style={{minWidth: 145}}
+                    margin="normal"
+                    >
+                        <InputLabel>Transit Mode</InputLabel>
+                        <Select
+                        value={this.state.transitMode}
+                        onChange={this.handleSelect}
+                        autoWidth
+                        >
+                            <MenuItem name="transitMode" value={"DRIVING"}>Driving</MenuItem>
+                            <MenuItem name="transitMode" value={"BICYCLING"}>Bicycling</MenuItem>
+                            <MenuItem name="transitMode" value={"TRANSIT"}>Transit</MenuItem>
+                            <MenuItem name="transitMode" value={"WALKING"}>Walking</MenuItem>
+                        </Select>
+                    </FormControl><br />
+
+                    <Button 
+                    variant="contained" 
+                    color="primary" 
+                    type="submit"
+                    margin="normal"
+                    >
+                        Find Places!
+                    </Button>
                 </form>
             </div>
         )

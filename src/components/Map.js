@@ -2,12 +2,17 @@ import React, { Component } from 'react';
 import { withScriptjs, withGoogleMap, GoogleMap, Marker, Polyline, DirectionsRenderer } from "react-google-maps";
 import { connect } from 'react-redux';
 import Geocode from 'react-geocode';
-import midpointIcon from '../midpoint.png'
+import midpointIcon from '../midpointIcon.png';
+import firstLocationIcon from '../firstLocationIcon.png';
+import secondLocationIcon from '../secondLocationIcon.png';
+import BusinessesContainer from '../containers/BusinessesContainer';
 
 var polyline = require( 'google-polyline' )
 var midpoint = require('polyline-midpoint')
+const axios = require('axios').default
 
 const API_KEY = `${process.env.REACT_APP_API_KEY}`
+const YELP_KEY = `${process.env.REACT_APP_YELP_KEY}`
 
 class Map extends Component {
 
@@ -34,7 +39,7 @@ class Map extends Component {
 
                     origin: new window.google.maps.LatLng(firstCoordinates.lat, firstCoordinates.lng),
                     destination: new window.google.maps.LatLng(secondCoordinates.lat, secondCoordinates.lng),
-                    travelMode: window.google.maps.TravelMode.DRIVING
+                    travelMode: window.google.maps.TravelMode[this.props.transitMode]
 
                 }, (result, status) => {
 
@@ -52,7 +57,30 @@ class Map extends Component {
                             })
                         })
 
-                        console.log(this.state)
+                        const corsApiUrl = 'https://cors-anywhere.herokuapp.com/'
+
+                        axios.get(`${corsApiUrl}https://api.yelp.com/v3/businesses/search?latitude=${this.state.polylineMidpoint.lat}&longitude=${this.state.polylineMidpoint.lng}`, {
+                            headers: {
+                                Authorization: `Bearer ${YELP_KEY}`
+                            },
+                            params: {
+                                term: `${this.props.pointOfInterest}`,
+                                radius: 40000,
+                                limit: 10
+                            }
+                        })
+                        .then((res) => {
+                            this.setState({
+                                ...this.state,
+                                businesses: res.data.businesses
+                            })
+                            debugger
+                        })
+                        .catch((err) => {
+                            console.log ('error')
+                        })
+
+                        console.log(this.state.businesses)
 
                     } else {
                         console.error(`error fetching directions ${result}`);
@@ -69,6 +97,10 @@ class Map extends Component {
 
     componentDidMount() {
         this.convertAddressesToGeocode(this.props.firstAddress, this.props.secondAddress)
+    }
+
+    componentDidUpdate() {
+        console.log(this.state)
     }
 
     handleMapMounted = (map) => {
@@ -92,9 +124,11 @@ class Map extends Component {
               ref={props.onMapMounted}
             >
               <Marker
+                icon={firstLocationIcon}
                 position={this.state.firstGeocode}
               />
               <Marker
+                icon={secondLocationIcon}
                 position={this.state.secondGeocode}
               />
               <Marker 
@@ -115,13 +149,16 @@ class Map extends Component {
         )
 
         return (
-            <MapWithAMarker
-                googleMapURL={`https://maps.googleapis.com/maps/api/js?key=${API_KEY}&v=3.exp&libraries=geometry,drawing,places`}
-                loadingElement={<div style={{ height: `100%` }} />}
-                containerElement={<div style={{ height: `400px` }} />}
-                mapElement={<div style={{ height: `100%` }} />}
-                onMapMounted={this.handleMapMounted}
-            />
+            <div>
+                <MapWithAMarker
+                    googleMapURL={`https://maps.googleapis.com/maps/api/js?key=${API_KEY}&v=3.exp&libraries=geometry,drawing,places`}
+                    loadingElement={<div style={{ height: `100%` }} />}
+                    containerElement={<div style={{ height: `500px`, width: `500px` }} />}
+                    mapElement={<div style={{ height: `100%` }} />}
+                    onMapMounted={this.handleMapMounted}
+                />
+                <BusinessesContainer businesses={this.state.businesses} />
+            </div>
         )
     }
 }

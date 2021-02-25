@@ -4,6 +4,7 @@ import Homepage from './components/Homepage';
 import About from './components/About';
 import React, { Component } from 'react';
 import MapContainer from './containers/MapContainer';
+import 'fontsource-roboto';
 
 const API_KEY = `${process.env.REACT_APP_API_KEY}`
 

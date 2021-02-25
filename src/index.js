@@ -6,6 +6,7 @@ import reportWebVitals from './reportWebVitals';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 import mapsReducer from './reducers/mapsReducer';
+import 'fontsource-roboto';
 
 const store = createStore(mapsReducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 
