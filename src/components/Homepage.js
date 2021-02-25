@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import LocationForm from './LocationForm';
 import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
+import appLogo from '../appLogo.png';
 
 const theme = createMuiTheme({
     typography: {
@@ -24,9 +25,15 @@ export default class Homepage extends Component {
                         direction="column"
                     >
                         <div>
-                        <h1>Meet Me Halfway</h1>
-                        <p>Discover places to meet and eat halfway between you and a friend.</p>
-                        <LocationForm />
+                            <div className="logo-div">
+                                <img 
+                                    src={appLogo} 
+                                    alt="Meet Me Halfway Logo" 
+                                    height="350" 
+                                    width="350"
+                                />
+                            </div>
+                            <LocationForm />
                         </div>
                     </Grid>
             </ThemeProvider>

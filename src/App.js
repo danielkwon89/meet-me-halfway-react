@@ -4,8 +4,8 @@ import Homepage from './components/Homepage';
 import About from './components/About';
 import React, { Component } from 'react';
 import MapContainer from './containers/MapContainer';
-// import 'fontsource-roboto';
 import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import CssBaseline from "@material-ui/core/CssBaseline";
 
 const API_KEY = `${process.env.REACT_APP_API_KEY}`
 
@@ -16,12 +16,18 @@ const theme = createMuiTheme({
       'sans-serif',
     ].join(','),
   },
+  // palette: {
+  //   background: {
+  //     default: "#ea8064"
+  //   }
+  // }
 });
 
 class App extends Component {
   render() {
     return (
       <ThemeProvider theme={theme}>
+        <CssBaseline />
         <Router>
           <div>
             <ul className="navbar">

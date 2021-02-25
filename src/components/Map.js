@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { withScriptjs, withGoogleMap, GoogleMap, Marker, Polyline, DirectionsRenderer } from "react-google-maps";
 import { connect } from 'react-redux';
 import Geocode from 'react-geocode';
-import midpointIcon from '../midpointIcon.png';
+import midpointLogo from '../midpointLogo.svg';
+import mapMarker from '../mapMarker.png';
 import firstLocationIcon from '../firstLocationIcon.png';
 import secondLocationIcon from '../secondLocationIcon.png';
 import BusinessesContainer from '../containers/BusinessesContainer';
@@ -66,7 +67,8 @@ class Map extends Component {
                             params: {
                                 term: `${this.props.pointOfInterest}`,
                                 radius: 40000,
-                                limit: 10
+                                limit: 10,
+                                // sort_by: distance
                             }
                         })
                         .then((res) => {
@@ -132,7 +134,7 @@ class Map extends Component {
                 position={this.state.secondGeocode}
               />
               <Marker 
-                icon={midpointIcon}
+                icon={midpointLogo}
                 position={this.state.polylineMidpoint}
               />
               <Polyline 

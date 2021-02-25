@@ -139,7 +139,7 @@ class LocationForm extends Component {
                         margin="normal"
                         name="pointOfInterest"
                         style={{minWidth: 400}}
-                        helperText="(e.g. Coffee, Hotel, Restaurant) Leave blank if none." 
+                        helperText="e.g. coffee, restaurant, hotel (or leave blank)" 
                         onChange={this.handleChange} 
                         value={this.state.pointOfInterest} 
                     /><br />
