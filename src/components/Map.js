@@ -66,7 +66,7 @@ class Map extends Component {
                             },
                             params: {
                                 term: `${this.props.pointOfInterest}`,
-                                radius: 40000,
+                                radius: 1610,
                                 limit: 10,
                                 // sort_by: distance
                             }
