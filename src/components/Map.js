@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import { withScriptjs, withGoogleMap, GoogleMap, Marker, Polyline, DirectionsRenderer } from "react-google-maps";
 import { connect } from 'react-redux';
 import Geocode from 'react-geocode';
-import midpointLogo from '../midpointLogo.svg';
-import mapMarker from '../mapMarker.png';
-import firstLocationIcon from '../firstLocationIcon.png';
-import secondLocationIcon from '../secondLocationIcon.png';
+import midpointLogo from '../icons/midpointLogo.png';
+import mapMarker from '../icons/mapMarker.png';
+import firstLocationIcon from '../icons/firstLocationIcon.png';
+import secondLocationIcon from '../icons/secondLocationIcon.png';
 import BusinessesContainer from '../containers/BusinessesContainer';
 
 var polyline = require( 'google-polyline' )
@@ -66,8 +66,8 @@ class Map extends Component {
                             },
                             params: {
                                 term: `${this.props.pointOfInterest}`,
-                                radius: 1610,
-                                limit: 10,
+                                radius: 5000, // radius is in meters, 5000 meters is a little over 3 miles
+                                limit: 15,
                                 // sort_by: distance
                             }
                         })
@@ -76,7 +76,7 @@ class Map extends Component {
                                 ...this.state,
                                 businesses: res.data.businesses
                             })
-                            debugger
+                            // debugger
                         })
                         .catch((err) => {
                             console.log ('error')
@@ -117,6 +117,17 @@ class Map extends Component {
         }
     }
 
+    // changeIconSize = (path, size) => {
+    //     let resizedIcon = {
+    //         url: path,
+    //         scaledSize: new window.google.maps.Size(parseInt(size), parseInt(size)),
+    //         origin: new window.google.maps.Point(0, 0),
+    //         anchor: new window.google.maps.Point(0, 0)
+    //     }
+    //     debugger
+    //     return resizedIcon
+    // }
+
     render() {
 
         const MapWithAMarker = withScriptjs(withGoogleMap(props =>
@@ -137,6 +148,11 @@ class Map extends Component {
                 icon={midpointLogo}
                 position={this.state.polylineMidpoint}
               />
+              {this.state.businesses && this.state.businesses.map(business => {
+                  return <Marker 
+                    position={{ lat: parseFloat(`${business.coordinates.latitude}`), lng: parseFloat(`${business.coordinates.longitude}`)}}
+                  />
+              })}
               <Polyline 
                 path={this.state.polylineCoordinates}
                 options={{

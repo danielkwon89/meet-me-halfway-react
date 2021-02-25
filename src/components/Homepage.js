@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import LocationForm from './LocationForm';
 import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
-import appLogo from '../appLogo.png';
+import appLogo from '../icons/appLogo.png';
 
 const theme = createMuiTheme({
     typography: {
