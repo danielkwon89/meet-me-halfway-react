@@ -51,6 +51,10 @@ class LocationForm extends Component {
     getLocation = event => {
         event.preventDefault()
         event.stopPropagation()
+        this.setState({
+            ...this.state,
+            firstAddress: "Searching..."
+        })
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(this.getCoordinates, this.showError);
         } else {
@@ -98,51 +102,58 @@ class LocationForm extends Component {
             <div>
                 <form onSubmit={this.handleSubmit}>
                     <TextField 
-                    id="outlined-helperText" 
-                    label="First Address" 
-                    variant="outlined"
-                    margin="normal"
-                    name="firstAddress"
-                    onChange={this.handleChange} 
-                    value={this.state.firstAddress} 
-                    />
-
-                    <IconButton 
-                    variant="contained" 
-                    color="secondary" 
-                    onClick={this.getLocation.bind(this)}>
-                        <MyLocationIcon />
-                    </IconButton><br />
+                        id="outlined-helperText" 
+                        label="First Address" 
+                        variant="outlined"
+                        margin="normal"
+                        name="firstAddress"
+                        style={{minWidth: 400}}
+                        onChange={this.handleChange} 
+                        value={this.state.firstAddress} 
+                    /><br />
+                    
+                    <Button
+                        variant="contained"
+                        color="secondary"
+                        startIcon={<MyLocationIcon/>}
+                        onClick={this.getLocation.bind(this)}
+                    >
+                        Current Location
+                    </Button><br />
 
                     <TextField 
-                    id="outlined-helperText" 
-                    label="Second Address" 
-                    variant="outlined"
-                    margin="normal" 
-                    name="secondAddress"
-                    onChange={this.handleChange} 
-                    value={this.state.secondAddress} /><br />
+                        id="outlined-helperText" 
+                        label="Second Address" 
+                        variant="outlined"
+                        margin="normal" 
+                        name="secondAddress"
+                        style={{minWidth: 400}}
+                        onChange={this.handleChange} 
+                        value={this.state.secondAddress} 
+                    /><br />
                     
                     <TextField 
-                    id="outlined-helperText" 
-                    label="Point of Interest" 
-                    variant="outlined"
-                    margin="normal"
-                    name="pointOfInterest"
-                    helperText="(e.g. Coffee, Hotel, Restaurant) Leave blank if none." 
-                    onChange={this.handleChange} 
-                    value={this.state.pointOfInterest} /><br />
+                        id="outlined-helperText" 
+                        label="Point of Interest" 
+                        variant="outlined"
+                        margin="normal"
+                        name="pointOfInterest"
+                        style={{minWidth: 400}}
+                        helperText="(e.g. Coffee, Hotel, Restaurant) Leave blank if none." 
+                        onChange={this.handleChange} 
+                        value={this.state.pointOfInterest} 
+                    /><br />
 
                     <FormControl
-                    variant="filled"
-                    style={{minWidth: 145}}
-                    margin="normal"
+                        variant="filled"
+                        style={{minWidth: 145}}
+                        margin="normal"
                     >
                         <InputLabel>Transit Mode</InputLabel>
                         <Select
-                        value={this.state.transitMode}
-                        onChange={this.handleSelect}
-                        autoWidth
+                            value={this.state.transitMode}
+                            onChange={this.handleSelect}
+                            autoWidth
                         >
                             <MenuItem name="transitMode" value={"DRIVING"}>Driving</MenuItem>
                             <MenuItem name="transitMode" value={"BICYCLING"}>Bicycling</MenuItem>
@@ -152,10 +163,10 @@ class LocationForm extends Component {
                     </FormControl><br />
 
                     <Button 
-                    variant="contained" 
-                    color="primary" 
-                    type="submit"
-                    margin="normal"
+                        variant="contained" 
+                        color="primary" 
+                        type="submit"
+                        margin="normal"
                     >
                         Find Places!
                     </Button>
