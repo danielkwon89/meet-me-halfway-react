@@ -1,12 +1,18 @@
 import React, { Component } from 'react';
-import { withScriptjs, withGoogleMap, GoogleMap, Marker, Polyline, DirectionsRenderer } from "react-google-maps";
+import { withScriptjs, withGoogleMap, GoogleMap, Marker, Polyline } from "react-google-maps";
 import { connect } from 'react-redux';
 import Geocode from 'react-geocode';
 import midpointLogo from '../icons/midpointLogo.png';
-import mapMarker from '../icons/mapMarker.png';
+// import mapMarker from '../icons/mapMarker.png';
 import firstLocationIcon from '../icons/firstLocationIcon.png';
 import secondLocationIcon from '../icons/secondLocationIcon.png';
 import BusinessesContainer from '../containers/BusinessesContainer';
+import Business from './Business';
+import GridList from '@material-ui/core/GridList';
+import GridListTile from '@material-ui/core/GridListTile';
+import GridListTileBar from '@material-ui/core/GridListTileBar';
+import ListSubheader from '@material-ui/core/ListSubheader';
+import { findAllByDisplayValue } from '@testing-library/react';
 
 var polyline = require( 'google-polyline' )
 var midpoint = require('polyline-midpoint')
@@ -18,6 +24,7 @@ const YELP_KEY = `${process.env.REACT_APP_YELP_KEY}`
 class Map extends Component {
 
     state = {}
+    renderBusiness = false
 
     convertAddressesToGeocode = (firstAddress, secondAddress) => {
 
@@ -117,6 +124,10 @@ class Map extends Component {
         }
     }
 
+    handleMarkerClick = () => {
+
+    }
+
     // changeIconSize = (path, size) => {
     //     let resizedIcon = {
     //         url: path,
@@ -151,6 +162,15 @@ class Map extends Component {
               {this.state.businesses && this.state.businesses.map(business => {
                   return <Marker 
                     position={{ lat: parseFloat(`${business.coordinates.latitude}`), lng: parseFloat(`${business.coordinates.longitude}`)}}
+                    // onClick={
+                    //     (business) => {
+                    //     this.renderBusiness = !this.renderBusiness
+                    //     this.setState({
+                    //         ...this.state,
+                    //         business: business
+                    //         })
+                    //     }
+                    // }
                   />
               })}
               <Polyline 
@@ -167,7 +187,7 @@ class Map extends Component {
         )
 
         return (
-            <div>
+            <GridList cellHeight={500} cols={2}>
                 <MapWithAMarker
                     googleMapURL={`https://maps.googleapis.com/maps/api/js?key=${API_KEY}&v=3.exp&libraries=geometry,drawing,places`}
                     loadingElement={<div style={{ height: `100%` }} />}
@@ -175,8 +195,10 @@ class Map extends Component {
                     mapElement={<div style={{ height: `100%` }} />}
                     onMapMounted={this.handleMapMounted}
                 />
-                <BusinessesContainer businesses={this.state.businesses} />
-            </div>
+                <GridList cellHeight={500}>
+                    {this.renderBusiness ? null : <BusinessesContainer businesses={this.state.businesses} />}
+                </GridList>
+            </GridList>
         )
     }
 }

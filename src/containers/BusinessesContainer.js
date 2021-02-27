@@ -1,14 +1,18 @@
 import React, { Component } from 'react';
 import Business from '../components/Business';
+import GridList from '@material-ui/core/GridList';
+import GridListTile from '@material-ui/core/GridListTile';
+import GridListTileBar from '@material-ui/core/GridListTileBar';
 
 class BusinessesContainer extends Component {
 
     renderBusinesses = businesses => {
         if (businesses) {
-            // debugger
             return businesses.map(business => {
-                return <Business business={business} />
+                return <GridListTile col={1}><Business business={business} /></GridListTile>
             })
+        } else {
+            return <h3>"Loading Businesses..."</h3>
         }
     }
 
@@ -16,7 +20,6 @@ class BusinessesContainer extends Component {
         // debugger
         return (
             <div>
-                <h2>BusinessesContainer</h2>
                 {this.renderBusinesses(this.props.businesses)}
             </div>
         )
