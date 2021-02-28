@@ -8,6 +8,8 @@ import firstLocationIcon from '../icons/firstLocationIcon.png';
 import secondLocationIcon from '../icons/secondLocationIcon.png';
 import BusinessesContainer from '../containers/BusinessesContainer';
 import Business from './Business';
+import { IconButton, Button } from "@material-ui/core"
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
 import GridListTileBar from '@material-ui/core/GridListTileBar';
@@ -23,8 +25,8 @@ const YELP_KEY = `${process.env.REACT_APP_YELP_KEY}`
 
 class Map extends Component {
 
-    state = {}
-    renderBusiness = false
+    state = {renderBusiness: false}
+    
 
     convertAddressesToGeocode = (firstAddress, secondAddress) => {
 
@@ -124,8 +126,8 @@ class Map extends Component {
         }
     }
 
-    handleMarkerClick = () => {
-
+    handleBackButtonClick = () => {
+        debugger
     }
 
     // changeIconSize = (path, size) => {
@@ -162,15 +164,15 @@ class Map extends Component {
               {this.state.businesses && this.state.businesses.map(business => {
                   return <Marker 
                     position={{ lat: parseFloat(`${business.coordinates.latitude}`), lng: parseFloat(`${business.coordinates.longitude}`)}}
-                    // onClick={
-                    //     (business) => {
-                    //     this.renderBusiness = !this.renderBusiness
-                    //     this.setState({
-                    //         ...this.state,
-                    //         business: business
-                    //         })
-                    //     }
-                    // }
+                    onClick={() => {
+                        
+                        this.setState({
+                            ...this.state,
+                            business: business,
+                            renderBusiness: !this.state.renderBusiness
+                            })
+                        }
+                    }
                   />
               })}
               <Polyline 
@@ -196,7 +198,23 @@ class Map extends Component {
                     onMapMounted={this.handleMapMounted}
                 />
                 <GridList cellHeight={500}>
-                    {this.renderBusiness ? null : <BusinessesContainer businesses={this.state.businesses} />}
+                    {this.state.renderBusiness ? 
+                    <div>
+                        <Button
+                        variant="contained"
+                        color="default"
+                        startIcon={<ArrowBackIcon />}
+                        onClick={() => {
+                            this.setState({
+                                ...this.state,
+                                renderBusiness: !this.state.renderBusiness
+                            })
+                        }}
+                        >
+                        Back To List
+                        </Button>
+                        <Business business={this.state.business} />
+                    </div> : <BusinessesContainer businesses={this.state.businesses} />}
                 </GridList>
             </GridList>
         )

@@ -34,10 +34,6 @@ class App extends Component {
         <CssBaseline />
         <Router>
           <div>
-            {/* <ul className="navbar">
-              <li><NavLink to="/">Home</NavLink></li>
-              <li><NavLink to="/about">About Us</NavLink></li>
-            </ul> */}
             <AppBar position="static">
               <Toolbar>
                 <IconButton edge="start" color="inherit" aria-label="home">
