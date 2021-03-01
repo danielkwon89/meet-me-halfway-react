@@ -1,7 +1,6 @@
 import axios from 'axios';
 
 export const fetchRestaurants = (searchValues) => {
-  // debugger
   return (dispatch) => {
     dispatch({ type: 'LOADING_RESTAURANTS' });
     axios.post('http://localhost:3000/search', {
