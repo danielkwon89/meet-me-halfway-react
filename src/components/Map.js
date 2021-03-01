@@ -17,6 +17,7 @@ import GridList from '@material-ui/core/GridList';
 // import { findAllByDisplayValue } from '@testing-library/react';
 import { fetchRestaurants } from '../actions/yelpActions';
 import { Button } from '@material-ui/core';
+// import { spacing } from '@material-ui/system';
 
 var polyline = require( 'google-polyline' )
 var midpoint = require('polyline-midpoint')
@@ -113,10 +114,6 @@ class Map extends Component {
         this.convertAddressesToGeocode(this.props.firstAddress, this.props.secondAddress)
     }
 
-    componentDidUpdate() {
-        // console.log(this.state)
-    }
-
     handleMapMounted = (map) => {
         this._map = map
         if (map && this.state.firstGeocode && this.state.secondGeocode) {
@@ -192,7 +189,7 @@ class Map extends Component {
         )
 
         return (
-            <GridList cellHeight={500} cols={2}>
+            <GridList cellHeight={500} cols={2} style={{margin: 0}}>
                 <MapWithAMarker
                     googleMapURL={`https://maps.googleapis.com/maps/api/js?key=${API_KEY}&v=3.exp&libraries=geometry,drawing,places`}
                     loadingElement={<div style={{ height: `100%` }} />}
@@ -233,11 +230,5 @@ const mapStateToProps = state => {
         businesses: state.businesses
     }
 }
-
-// const mapDispatchToProps = dispatch => {
-//     return {
-//         fetchRestaurants: fetchRestaurants()
-//     }
-// }
 
 export default connect(mapStateToProps)(Map)

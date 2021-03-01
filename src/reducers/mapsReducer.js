@@ -11,14 +11,14 @@ export default function mapsReducer(state = {firstAddress: "", secondAddress: ""
             }
 
         case "LOADING_RESTAURANTS":
-            debugger
+            // debugger
             return {
                 ...state,
                 loading: true
             }
 
         case "FETCH_RESTAURANTS":
-            debugger
+            // debugger
             return {
                 ...state,
                 businesses: action.businesses,

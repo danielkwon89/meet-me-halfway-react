@@ -9,7 +9,6 @@ export const fetchRestaurants = (searchValues) => {
         longitude: searchValues.longitude
       })
       .then((res) => {
-        debugger
         dispatch({
           type: 'FETCH_RESTAURANTS',
           businesses: res.data.businesses

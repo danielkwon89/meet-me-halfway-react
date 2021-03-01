@@ -13,8 +13,6 @@ import { IconButton, Button } from "@material-ui/core"
 // import { Home } from "@material-ui/icons"
 import ListIcon from '@material-ui/icons/List';
 
-// const API_KEY = `${process.env.REACT_APP_API_KEY}`
-
 const theme = createMuiTheme({
   typography: {
     fontFamily: [

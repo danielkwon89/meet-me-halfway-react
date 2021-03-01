@@ -44,3 +44,11 @@
 .navlink {
   color: #ffffff
 }
+
+.content {
+  padding-top: 0px;
+}
+
+.MuiGridList-root {
+  margin: 0px;
+}
