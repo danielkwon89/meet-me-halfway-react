@@ -6,12 +6,14 @@ import React, { Component } from 'react';
 import MapContainer from './containers/MapContainer';
 import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import CssBaseline from "@material-ui/core/CssBaseline";
-import { AppBar, Toolbar, Link, Tab, List, ListItem, ListItemText } from "@material-ui/core"
+import { AppBar, Toolbar, 
+  // Link, Tab, List, ListItem, ListItemText 
+} from "@material-ui/core"
 import { IconButton, Button } from "@material-ui/core"
-import { Home } from "@material-ui/icons"
+// import { Home } from "@material-ui/icons"
 import ListIcon from '@material-ui/icons/List';
 
-const API_KEY = `${process.env.REACT_APP_API_KEY}`
+// const API_KEY = `${process.env.REACT_APP_API_KEY}`
 
 const theme = createMuiTheme({
   typography: {
@@ -20,11 +22,6 @@ const theme = createMuiTheme({
       'sans-serif',
     ].join(','),
   },
-  // palette: {
-  //   background: {
-  //     default: "#ea8064"
-  //   }
-  // }
 });
 
 class App extends Component {

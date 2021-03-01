@@ -10,6 +10,21 @@ export default function mapsReducer(state = {firstAddress: "", secondAddress: ""
                 pointOfInterest: action.state.pointOfInterest
             }
 
+        case "LOADING_RESTAURANTS":
+            debugger
+            return {
+                ...state,
+                loading: true
+            }
+
+        case "FETCH_RESTAURANTS":
+            debugger
+            return {
+                ...state,
+                businesses: action.businesses,
+                loading: false
+            };
+
         default:
             return state;
     }

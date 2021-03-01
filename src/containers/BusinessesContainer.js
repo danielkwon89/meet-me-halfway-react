@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import Business from '../components/Business';
-import GridList from '@material-ui/core/GridList';
+// import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
-import GridListTileBar from '@material-ui/core/GridListTileBar';
+// import GridListTileBar from '@material-ui/core/GridListTileBar';
 
 class BusinessesContainer extends Component {
 

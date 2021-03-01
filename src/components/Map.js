@@ -8,20 +8,22 @@ import firstLocationIcon from '../icons/firstLocationIcon.png';
 import secondLocationIcon from '../icons/secondLocationIcon.png';
 import BusinessesContainer from '../containers/BusinessesContainer';
 import Business from './Business';
-import { IconButton, Button } from "@material-ui/core"
+// import { IconButton, Button } from "@material-ui/core"
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import GridList from '@material-ui/core/GridList';
-import GridListTile from '@material-ui/core/GridListTile';
-import GridListTileBar from '@material-ui/core/GridListTileBar';
-import ListSubheader from '@material-ui/core/ListSubheader';
-import { findAllByDisplayValue } from '@testing-library/react';
+// import GridListTile from '@material-ui/core/GridListTile';
+// import GridListTileBar from '@material-ui/core/GridListTileBar';
+// import ListSubheader from '@material-ui/core/ListSubheader';
+// import { findAllByDisplayValue } from '@testing-library/react';
+import { fetchRestaurants } from '../actions/yelpActions';
+import { Button } from '@material-ui/core';
 
 var polyline = require( 'google-polyline' )
 var midpoint = require('polyline-midpoint')
-const axios = require('axios').default
+// const axios = require('axios').default
 
 const API_KEY = `${process.env.REACT_APP_API_KEY}`
-const YELP_KEY = `${process.env.REACT_APP_YELP_KEY}`
+// const YELP_KEY = `${process.env.REACT_APP_YELP_KEY}`
 
 class Map extends Component {
 
@@ -67,32 +69,33 @@ class Map extends Component {
                             })
                         })
 
-                        const corsApiUrl = 'https://cors-anywhere.herokuapp.com/'
+                        // const corsApiUrl = 'https://cors-anywhere.herokuapp.com/'
 
-                        axios.get(`${corsApiUrl}https://api.yelp.com/v3/businesses/search?latitude=${this.state.polylineMidpoint.lat}&longitude=${this.state.polylineMidpoint.lng}`, {
-                            headers: {
-                                Authorization: `Bearer ${YELP_KEY}`
-                            },
-                            params: {
-                                term: `${this.props.pointOfInterest}`,
-                                radius: 5000, // radius is in meters, 5000 meters is a little over 3 miles
-                                limit: 15,
-                                // sort_by: distance
-                            }
-                        })
-                        .then((res) => {
-                            this.setState({
-                                ...this.state,
-                                businesses: res.data.businesses
-                            })
-                            // debugger
-                        })
-                        .catch((err) => {
-                            console.log ('error')
-                        })
+                        // axios.get(`${corsApiUrl}https://api.yelp.com/v3/businesses/search?latitude=${this.state.polylineMidpoint.lat}&longitude=${this.state.polylineMidpoint.lng}`, {
+                        //     headers: {
+                        //         Authorization: `Bearer ${YELP_KEY}`
+                        //     },
+                        //     params: {
+                        //         term: `${this.props.pointOfInterest}`,
+                        //         radius: 5000, // radius is in meters, 5000 meters is a little over 3 miles
+                        //         limit: 15,
+                        //         // sort_by: distance
+                        //     }
+                        // })
+                        // .then((res) => {
+                        //     this.setState({
+                        //         ...this.state,
+                        //         businesses: res.data.businesses
+                        //     })
+                        //     // debugger
+                        // })
+                        // .catch((err) => {
+                        //     console.log ('error')
+                        // })
 
-                        console.log(this.state.businesses)
+                        // console.log(this.state.businesses)
 
+                        this.props.dispatch(fetchRestaurants({ term: `${this.props.pointOfInterest}`, latitude: `${this.state.polylineMidpoint.lat}`, longitude: `${this.state.polylineMidpoint.lng}` }))
                     } else {
                         console.error(`error fetching directions ${result}`);
                     }
@@ -111,7 +114,7 @@ class Map extends Component {
     }
 
     componentDidUpdate() {
-        console.log(this.state)
+        // console.log(this.state)
     }
 
     handleMapMounted = (map) => {
@@ -161,7 +164,7 @@ class Map extends Component {
                 icon={midpointLogo}
                 position={this.state.polylineMidpoint}
               />
-              {this.state.businesses && this.state.businesses.map(business => {
+              {this.props.businesses && this.props.businesses.map(business => {
                   return <Marker 
                     position={{ lat: parseFloat(`${business.coordinates.latitude}`), lng: parseFloat(`${business.coordinates.longitude}`)}}
                     onClick={() => {
@@ -169,7 +172,7 @@ class Map extends Component {
                         this.setState({
                             ...this.state,
                             business: business,
-                            renderBusiness: !this.state.renderBusiness
+                            renderBusiness: true
                             })
                         }
                     }
@@ -207,14 +210,14 @@ class Map extends Component {
                         onClick={() => {
                             this.setState({
                                 ...this.state,
-                                renderBusiness: !this.state.renderBusiness
+                                renderBusiness: false
                             })
                         }}
                         >
                         Back To List
                         </Button>
                         <Business business={this.state.business} />
-                    </div> : <BusinessesContainer businesses={this.state.businesses} />}
+                    </div> : <BusinessesContainer businesses={this.props.businesses} />}
                 </GridList>
             </GridList>
         )
@@ -226,8 +229,15 @@ const mapStateToProps = state => {
         firstAddress: state.firstAddress,
         secondAddress: state.secondAddress,
         transitMode: state.transitMode,
-        pointOfInterest: state.pointOfInterest
+        pointOfInterest: state.pointOfInterest,
+        businesses: state.businesses
     }
 }
+
+// const mapDispatchToProps = dispatch => {
+//     return {
+//         fetchRestaurants: fetchRestaurants()
+//     }
+// }
 
 export default connect(mapStateToProps)(Map)
