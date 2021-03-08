@@ -2,29 +2,24 @@ import React, { Component } from 'react';
 import { withScriptjs, withGoogleMap, GoogleMap, Marker, Polyline } from "react-google-maps";
 import { connect } from 'react-redux';
 import Geocode from 'react-geocode';
-import midpointLogo from '../icons/midpointLogo.png';
-// import mapMarker from '../icons/mapMarker.png';
-import firstLocationIcon from '../icons/firstLocationIcon.png';
-import secondLocationIcon from '../icons/secondLocationIcon.png';
 import BusinessesContainer from '../containers/BusinessesContainer';
 import Business from './Business';
-// import { IconButton, Button } from "@material-ui/core"
+import { fetchRestaurants } from '../actions/yelpActions';
+
+// ui imports
+import { Button } from '@material-ui/core';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import GridList from '@material-ui/core/GridList';
-// import GridListTile from '@material-ui/core/GridListTile';
-// import GridListTileBar from '@material-ui/core/GridListTileBar';
-// import ListSubheader from '@material-ui/core/ListSubheader';
-// import { findAllByDisplayValue } from '@testing-library/react';
-import { fetchRestaurants } from '../actions/yelpActions';
-import { Button } from '@material-ui/core';
-// import { spacing } from '@material-ui/system';
+
+// icon imports
+import midpointLogo from '../icons/midpointLogo.png';
+import firstLocationIcon from '../icons/firstLocationIcon.png';
+import secondLocationIcon from '../icons/secondLocationIcon.png';
 
 var polyline = require( 'google-polyline' )
 var midpoint = require('polyline-midpoint')
-// const axios = require('axios').default
 
 const API_KEY = `${process.env.REACT_APP_API_KEY}`
-// const YELP_KEY = `${process.env.REACT_APP_YELP_KEY}`
 
 class Map extends Component {
 
@@ -70,32 +65,6 @@ class Map extends Component {
                             })
                         })
 
-                        // const corsApiUrl = 'https://cors-anywhere.herokuapp.com/'
-
-                        // axios.get(`${corsApiUrl}https://api.yelp.com/v3/businesses/search?latitude=${this.state.polylineMidpoint.lat}&longitude=${this.state.polylineMidpoint.lng}`, {
-                        //     headers: {
-                        //         Authorization: `Bearer ${YELP_KEY}`
-                        //     },
-                        //     params: {
-                        //         term: `${this.props.pointOfInterest}`,
-                        //         radius: 5000, // radius is in meters, 5000 meters is a little over 3 miles
-                        //         limit: 15,
-                        //         // sort_by: distance
-                        //     }
-                        // })
-                        // .then((res) => {
-                        //     this.setState({
-                        //         ...this.state,
-                        //         businesses: res.data.businesses
-                        //     })
-                        //     // debugger
-                        // })
-                        // .catch((err) => {
-                        //     console.log ('error')
-                        // })
-
-                        // console.log(this.state.businesses)
-
                         this.props.dispatch(fetchRestaurants({ term: `${this.props.pointOfInterest}`, latitude: `${this.state.polylineMidpoint.lat}`, longitude: `${this.state.polylineMidpoint.lng}` }))
                     } else {
                         console.error(`error fetching directions ${result}`);
@@ -115,12 +84,20 @@ class Map extends Component {
     }
 
     handleMapMounted = (map) => {
+
         this._map = map
-        if (map && this.state.firstGeocode && this.state.secondGeocode) {
+
+        // if (map && this.state.firstGeocode && this.state.secondGeocode) {
+        if (map && this.props.businesses) {
+
           const bounds = new window.google.maps.LatLngBounds()
 
-          bounds.extend(this.state.firstGeocode)
-          bounds.extend(this.state.secondGeocode)
+        //   bounds.extend(this.state.firstGeocode)
+        //   bounds.extend(this.state.secondGeocode)
+
+          {this.props.businesses.map(business => 
+              bounds.extend({ lat: parseFloat(`${business.coordinates.latitude}`), lng: parseFloat(`${business.coordinates.longitude}`) })
+          )}
 
           this._map.fitBounds(bounds)
         }
@@ -129,17 +106,6 @@ class Map extends Component {
     handleBackButtonClick = () => {
         debugger
     }
-
-    // changeIconSize = (path, size) => {
-    //     let resizedIcon = {
-    //         url: path,
-    //         scaledSize: new window.google.maps.Size(parseInt(size), parseInt(size)),
-    //         origin: new window.google.maps.Point(0, 0),
-    //         anchor: new window.google.maps.Point(0, 0)
-    //     }
-    //     debugger
-    //     return resizedIcon
-    // }
 
     render() {
 
@@ -199,7 +165,7 @@ class Map extends Component {
                 />
                 <GridList cellHeight={500}>
                     {this.state.renderBusiness ? 
-                    <div>
+                    <div style={{textAlign: "center"}}>
                         <Button
                         variant="contained"
                         color="default"

@@ -1,17 +1,16 @@
-import './App.css';
 import { BrowserRouter as Router, Route, NavLink } from 'react-router-dom';
 import Homepage from './components/Homepage';
 import About from './components/About';
 import React, { Component } from 'react';
 import MapContainer from './containers/MapContainer';
+
+// ui imports
 import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import CssBaseline from "@material-ui/core/CssBaseline";
-import { AppBar, Toolbar, 
-  // Link, Tab, List, ListItem, ListItemText 
-} from "@material-ui/core"
+import { AppBar, Toolbar } from "@material-ui/core"
 import { IconButton, Button } from "@material-ui/core"
-// import { Home } from "@material-ui/icons"
 import ListIcon from '@material-ui/icons/List';
+import './App.css';
 
 const theme = createMuiTheme({
   typography: {
@@ -23,6 +22,7 @@ const theme = createMuiTheme({
 });
 
 class App extends Component {
+
   render() {
     return (
       <ThemeProvider theme={theme}>

@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import Business from '../components/Business';
-// import GridList from '@material-ui/core/GridList';
+
+// ui imports
 import GridListTile from '@material-ui/core/GridListTile';
-// import GridListTileBar from '@material-ui/core/GridListTileBar';
 
 class BusinessesContainer extends Component {
 
@@ -17,7 +17,6 @@ class BusinessesContainer extends Component {
     }
 
     render() {
-        // debugger
         return (
             <div>
                 {this.renderBusinesses(this.props.businesses)}

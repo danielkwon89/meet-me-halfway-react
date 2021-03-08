@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 export default class Business extends Component {
     render() {
         return (
-            <div>
+            <div style={{textAlign: "center"}}>
                 <h3>
                     {this.props.business.name}
                 </h3>

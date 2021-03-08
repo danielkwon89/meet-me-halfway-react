@@ -2,20 +2,19 @@ import React, { Component } from 'react';
 import Geocode from 'react-geocode';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+
+// ui imports
 import Button from '@material-ui/core/Button';
-// import Input from '@material-ui/core/Input';
 import MyLocationIcon from '@material-ui/icons/MyLocation';
-// import IconButton from '@material-ui/core/IconButton';
 import TextField from '@material-ui/core/TextField';
 import Select from '@material-ui/core/Select';
 import FormControl from '@material-ui/core/FormControl';
 import MenuItem from '@material-ui/core/MenuItem';
 import InputLabel from '@material-ui/core/InputLabel';
+import { FormHelperText } from '@material-ui/core';
 
 Geocode.setApiKey(`${process.env.REACT_APP_API_KEY}`);
 Geocode.enableDebug();
-
-// add Place Autocomplete API for address input on the form
 
 class LocationForm extends Component {
 
@@ -30,7 +29,6 @@ class LocationForm extends Component {
     }
 
     handleChange = event => {
-        // console.log(event.target.name)
         this.setState({
             [event.target.name]: event.target.value
         })
@@ -102,6 +100,7 @@ class LocationForm extends Component {
             <div>
                 <form onSubmit={this.handleSubmit}>
                     <TextField 
+                        required
                         id="outlined-helperText" 
                         label="First Address" 
                         variant="outlined"
@@ -121,7 +120,8 @@ class LocationForm extends Component {
                         Current Location
                     </Button><br />
 
-                    <TextField 
+                    <TextField
+                        required
                         id="outlined-helperText" 
                         label="Second Address" 
                         variant="outlined"
@@ -145,11 +145,14 @@ class LocationForm extends Component {
                     /><br />
 
                     <FormControl
+                        required
                         variant="filled"
                         style={{minWidth: 145}}
                         margin="normal"
                     >
-                        <InputLabel>Transit Mode</InputLabel>
+                        <InputLabel
+                            htmlFor="age-native-required"
+                        >Transit Mode</InputLabel>
                         <Select
                             value={this.state.transitMode}
                             onChange={this.handleSelect}
@@ -159,7 +162,9 @@ class LocationForm extends Component {
                             <MenuItem name="transitMode" value={"BICYCLING"}>Bicycling</MenuItem>
                             <MenuItem name="transitMode" value={"TRANSIT"}>Transit</MenuItem>
                             <MenuItem name="transitMode" value={"WALKING"}>Walking</MenuItem>
+
                         </Select>
+                        <FormHelperText>Required</FormHelperText>
                     </FormControl><br />
 
                     <Button 
