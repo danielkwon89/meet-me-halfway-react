@@ -23,9 +23,10 @@ const API_KEY = `${process.env.REACT_APP_API_KEY}`
 
 class Map extends Component {
 
+    // false state will render all business, true state will render one business
     state = {renderBusiness: false}
     
-
+    // takes the addresses from the LocationForm and converts them to coordinates
     convertAddressesToGeocode = (firstAddress, secondAddress) => {
 
         let firstCoordinates;
@@ -43,18 +44,23 @@ class Map extends Component {
 
                 const DirectionsService = new window.google.maps.DirectionsService();
 
+                // nested fetch requests because we need both coordinates to successfully request directions
                 DirectionsService.route({
 
                     origin: new window.google.maps.LatLng(firstCoordinates.lat, firstCoordinates.lng),
                     destination: new window.google.maps.LatLng(secondCoordinates.lat, secondCoordinates.lng),
+                    // grabs mode of transit from LocationForm
                     travelMode: window.google.maps.TravelMode[this.props.transitMode]
 
                 }, (result, status) => {
 
                     if (status === window.google.maps.DirectionsStatus.OK) {
 
+                        // uses polyline-midpoint npm package to calculate midpoint coordinates using the overview_polyline attribute from the directions service
                         const midpointArr = midpoint(result.routes[0].overview_polyline).geometry.coordinates
 
+                        // sends the addresses coordinates, midpoint coordinates, and the polyline coordinates to the redux store
+                        // will setting the state in the redux store prevent a re-render? (yes) fix this
                         this.setState({
                             ...this.state,
                             firstGeocode: firstCoordinates,
@@ -65,6 +71,7 @@ class Map extends Component {
                             })
                         })
 
+                        // fetches point of interests based on midpoint coordinates and user input (from LocationForm) from the Yelp API
                         this.props.dispatch(fetchRestaurants({ term: `${this.props.pointOfInterest}`, latitude: `${this.state.polylineMidpoint.lat}`, longitude: `${this.state.polylineMidpoint.lng}` }))
                     } else {
                         console.error(`error fetching directions ${result}`);
@@ -72,6 +79,7 @@ class Map extends Component {
                 })
             })
         },
+
           (error) => {
             console.error(error);
           }
@@ -79,10 +87,12 @@ class Map extends Component {
 
     }
 
+    // starts conversion of addresses to coordinates once component is mounted
     componentDidMount() {
         this.convertAddressesToGeocode(this.props.firstAddress, this.props.secondAddress)
     }
 
+    // sets the bounds of the map around the business markers
     handleMapMounted = (map) => {
 
         this._map = map
@@ -103,18 +113,16 @@ class Map extends Component {
         }
     }
 
-    handleBackButtonClick = () => {
-        debugger
-    }
-
     render() {
 
+        // creates a map constant with a polyline and map markers for the first location, second location, midpoint, and business locations
         const MapWithAMarker = withScriptjs(withGoogleMap(props =>
             <GoogleMap
               defaultZoom={10}
               defaultCenter={this.state.firstGeocode}
               ref={props.onMapMounted}
             >
+            {/* rendering map markers for address A, address B and midpoint */}
               <Marker
                 icon={firstLocationIcon}
                 position={this.state.firstGeocode}
@@ -127,6 +135,7 @@ class Map extends Component {
                 icon={midpointLogo}
                 position={this.state.polylineMidpoint}
               />
+              {/* rendering map markers for fetched business data */}
               {this.props.businesses && this.props.businesses.map(business => {
                   return <Marker 
                     position={{ lat: parseFloat(`${business.coordinates.latitude}`), lng: parseFloat(`${business.coordinates.longitude}`)}}
@@ -141,6 +150,7 @@ class Map extends Component {
                     }
                   />
               })}
+              {/* rendering polyline from address A to address B */}
               <Polyline 
                 path={this.state.polylineCoordinates}
                 options={{
@@ -155,6 +165,8 @@ class Map extends Component {
         )
 
         return (
+
+            // uses Material UI GridList to organize the UI into grids
             <GridList cellHeight={500} cols={2} style={{margin: 0}}>
                 <MapWithAMarker
                     googleMapURL={`https://maps.googleapis.com/maps/api/js?key=${API_KEY}&v=3.exp&libraries=geometry,drawing,places`}
@@ -163,6 +175,7 @@ class Map extends Component {
                     mapElement={<div style={{ height: `100%` }} />}
                     onMapMounted={this.handleMapMounted}
                 />
+                {/* TODO: try to render BusinessContainer in the GridList and pass down the fetched businesses as props to BusinessContainer for rendering */}
                 <GridList cellHeight={500}>
                     {this.state.renderBusiness ? 
                     <div style={{textAlign: "center"}}>
