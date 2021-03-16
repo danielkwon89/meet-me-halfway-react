@@ -5,6 +5,7 @@ export default class Business extends Component {
         return (
             <div style={{textAlign: "center"}}>
                 <h3>
+                    {console.log(this.props)}
                     {this.props.business.name}
                 </h3>
                 <img src={this.props.business.image_url} alt="business" width="200" />

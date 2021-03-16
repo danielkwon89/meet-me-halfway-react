@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-// import Map from '../components/Map';
 import { withScriptjs, withGoogleMap, GoogleMap, Marker, Polyline } from "react-google-maps";
 import { connect } from 'react-redux';
 import Geocode from 'react-geocode';
@@ -8,8 +7,6 @@ import Business from '../components/Business';
 import { fetchRestaurants } from '../actions/yelpActions';
 
 // ui imports
-import { Button } from '@material-ui/core';
-import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import GridList from '@material-ui/core/GridList';
 
 // icon imports
@@ -25,10 +22,10 @@ var midpoint = require('polyline-midpoint')
 class MapContainer extends Component {
 
     // false state will render all business, true state will render one business
-    state = {renderBusiness: false}
+    state = {}
     
     // takes the addresses from the LocationForm and converts them to coordinates
-    convertAddressesToGeocode = (firstAddress, secondAddress) => {
+    fetchData = (firstAddress, secondAddress) => {
     
         let firstCoordinates;
         let secondCoordinates;
@@ -45,7 +42,7 @@ class MapContainer extends Component {
     
                 const DirectionsService = new window.google.maps.DirectionsService();
     
-                // nested fetch requests because we need both coordinates to successfully request directions
+                // nested fetch requests because we need both coordinates to complete fetching before requesting directions
                 DirectionsService.route({
     
                     origin: new window.google.maps.LatLng(firstCoordinates.lat, firstCoordinates.lng),
@@ -90,7 +87,7 @@ class MapContainer extends Component {
     
     // starts conversion of addresses to coordinates once component is mounted
     componentDidMount() {
-        this.convertAddressesToGeocode(this.props.firstAddress, this.props.secondAddress)
+        this.fetchData(this.props.firstAddress, this.props.secondAddress)
     }
     
     // sets the bounds of the map around the business markers
@@ -98,17 +95,17 @@ class MapContainer extends Component {
     
         this._map = map
     
-        // if (map && this.state.firstGeocode && this.state.secondGeocode) {
-        if (map && this.props.businesses) {
+        if (map && this.state.firstGeocode && this.state.secondGeocode) {
+        // if (map && this.props.businesses) {
     
             const bounds = new window.google.maps.LatLngBounds()
     
-            //   bounds.extend(this.state.firstGeocode)
-            //   bounds.extend(this.state.secondGeocode)
+              bounds.extend(this.state.firstGeocode)
+              bounds.extend(this.state.secondGeocode)
     
-            {this.props.businesses.map(business => 
-                bounds.extend({ lat: parseFloat(`${business.coordinates.latitude}`), lng: parseFloat(`${business.coordinates.longitude}`) })
-            )}
+            // {this.props.businesses.map(business => 
+            //     bounds.extend({ lat: parseFloat(`${business.coordinates.latitude}`), lng: parseFloat(`${business.coordinates.longitude}`) })
+            // )}
     
             this._map.fitBounds(bounds)
         }
@@ -140,12 +137,9 @@ class MapContainer extends Component {
               {this.props.businesses && this.props.businesses.map(business => {
                   return <Marker 
                     position={{ lat: parseFloat(`${business.coordinates.latitude}`), lng: parseFloat(`${business.coordinates.longitude}`)}}
-                    onClick={() => {    
-                        this.setState({
-                            ...this.state,
-                            business: business,
-                            renderBusiness: true
-                            })
+                    onClick={() => {
+                            this.props.dispatch({type: "SELECTED_BUSINESS", business: business})
+                            this.props.dispatch({type: "RENDER_BUSINESS"})
                         }
                     }
                   />
@@ -177,23 +171,7 @@ class MapContainer extends Component {
                     />
                     {/* TODO: try to render BusinessContainer in the GridList and pass down the fetched businesses as props to BusinessContainer for rendering */}
                     <GridList cellHeight={500}>
-                        {this.state.renderBusiness ? 
-                        <div style={{textAlign: "center"}}>
-                            <Button
-                            variant="contained"
-                            color="default"
-                            startIcon={<ArrowBackIcon />}
-                            onClick={() => {
-                                this.setState({
-                                    ...this.state,
-                                    renderBusiness: false
-                                })
-                            }}
-                            >
-                            Back To List
-                            </Button>
-                            <Business business={this.state.business} />
-                        </div> : <BusinessesContainer businesses={this.props.businesses} />}
+                        <BusinessesContainer businesses={this.props.businesses} />
                     </GridList>
                 </GridList>
                 {/* <Map /> */}
@@ -212,6 +190,5 @@ const mapStateToProps = state => {
         businesses: state.businesses
     }
 }
-
 
 export default connect(mapStateToProps)(MapContainer)
