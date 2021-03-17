@@ -24,7 +24,6 @@ export default function mapsReducer(state = {firstAddress: "", secondAddress: ""
             };
         
         case "RENDER_BUSINESS":
-            debugger
             return {
                 ...state,
                 renderBusiness: true
@@ -37,7 +36,6 @@ export default function mapsReducer(state = {firstAddress: "", secondAddress: ""
             }
 
         case "SELECTED_BUSINESS":
-            debugger
             return {
                 ...state,
                 business: action.business

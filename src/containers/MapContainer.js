@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import { withScriptjs, withGoogleMap, GoogleMap, Marker, Polyline } from "react-google-maps";
+import { withScriptjs, withGoogleMap, GoogleMap, Marker, Polyline, InfoWindow } from "react-google-maps";
 import { connect } from 'react-redux';
 import Geocode from 'react-geocode';
 import BusinessesContainer from '../containers/BusinessesContainer';
-import Business from '../components/Business';
 import { fetchRestaurants } from '../actions/yelpActions';
 
 // ui imports
@@ -11,8 +10,7 @@ import GridList from '@material-ui/core/GridList';
 
 // icon imports
 import midpointLogo from '../icons/midpointLogo.png';
-import firstLocationIcon from '../icons/firstLocationIcon.png';
-import secondLocationIcon from '../icons/secondLocationIcon.png';
+import mapMarker from '../icons/mapMarker.png';
 
 const API_KEY = `${process.env.REACT_APP_API_KEY}`
 
@@ -58,7 +56,6 @@ class MapContainer extends Component {
                         const midpointArr = midpoint(result.routes[0].overview_polyline).geometry.coordinates
     
                         // sends the addresses coordinates, midpoint coordinates, and the polyline coordinates to the redux store
-                        // will setting the state in the redux store prevent a re-render? (yes) fix this
                         this.setState({
                             ...this.state,
                             firstGeocode: firstCoordinates,
@@ -111,7 +108,35 @@ class MapContainer extends Component {
         }
     }
 
+    // resizeIcon = (markerName, size) => {
+    //     const resizedIcon = new window.google.maps.MarkerImage(
+    //             markerName, 
+    //             null, 
+    //             null, 
+    //             null,
+    //             new window.google.maps.Size(size, size)
+    //         )
+    //     return resizedIcon
+    // }
+
     render() {
+
+        // let resizedMapMarker = this.resizeIcon(mapMarker, 40)
+        // const resizedMapMarker = new window.google.maps.MarkerImage(
+        //     mapMarker, 
+        //     null, 
+        //     null, 
+        //     null,
+        //     new window.google.maps.Size(40, 40)
+        // )
+        // let resizedMidpointLogo = this.resizeIcon(midpointLogo, 65)
+        // const resizedMidpointLogo = new window.google.maps.MarkerImage(
+        //     midpointLogo, 
+        //     null, 
+        //     null, 
+        //     null,
+        //     new window.google.maps.Size(65, 65)
+        // )
 
         // creates a map constant with a polyline and map markers for the first location, second location, midpoint, and business locations
         const MapWithAMarker = withScriptjs(withGoogleMap(props =>
@@ -122,15 +147,24 @@ class MapContainer extends Component {
             >
             {/* rendering map markers for address A, address B and midpoint */}
               <Marker
-                icon={firstLocationIcon}
+                icon={new window.google.maps.MarkerImage(
+                    mapMarker, null, null, null,
+                    new window.google.maps.Size(40, 40)
+                )}
                 position={this.state.firstGeocode}
               />
               <Marker
-                icon={secondLocationIcon}
+                icon={new window.google.maps.MarkerImage(
+                    mapMarker, null, null, null,
+                    new window.google.maps.Size(40, 40)
+                )}
                 position={this.state.secondGeocode}
               />
               <Marker 
-                icon={midpointLogo}
+                icon={new window.google.maps.MarkerImage(
+                    midpointLogo, null, null, null, 
+                    new window.google.maps.Size(65, 65)
+                )}
                 position={this.state.polylineMidpoint}
               />
               {/* rendering map markers for fetched business data */}
