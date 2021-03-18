@@ -63,7 +63,7 @@ const iconObj = {
 class Business extends Component {
     render() {
         return (
-            <Card>
+            <Card style={{height: "100%"}}>
                 <Button
                     variant="contained"
                     color="primary"
@@ -101,14 +101,14 @@ class Business extends Component {
                 <CardContent>
                     <Typography
                         variant="body1"
-                        color="textSecondary"
+                        color="textPrimary"
                     >
                         <LocationOnTwoToneIcon fontSize="small" />{" "}{`${this.props.business.location.address1 || ""} ${this.props.business.location.address2 || ""} ${this.props.business.location.address3 || ""} ${this.props.business.location.city} ${this.props.business.location.zip_code}`}
                         <br/>
                         <PhoneIphoneTwoToneIcon fontSize="small" />{" "}{this.props.business.display_phone}
                         <br/>
                         <PublicTwoToneIcon fontSize="small" />{" "}
-                        <a target="_blank" href={this.props.business.url}>View On Yelp</a>
+                        <a target="_blank" rel="noreferrer" href={this.props.business.url}>View On Yelp</a>
                         <br/>
                         <LabelTwoToneIcon fontSize="small" />{" "}{this.props.business.categories.map(category => {
                             return this.props.business.categories.indexOf(category) === this.props.business.categories.length-1 ? `${category.title}` : `${category.title}, `

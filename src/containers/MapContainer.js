@@ -67,7 +67,9 @@ class MapContainer extends Component {
     
     // takes the addresses from the LocationForm and converts them to coordinates
     fetchData = (firstAddress, secondAddress) => {
-    
+
+        this.props.dispatch({ type: 'LOADING_RESTAURANTS' })
+
         let firstCoordinates;
         let secondCoordinates;
     
@@ -128,6 +130,12 @@ class MapContainer extends Component {
     // starts conversion of addresses to coordinates once component is mounted
     componentDidMount() {
         this.fetchData(this.props.firstAddress, this.props.secondAddress)
+    }
+
+    componentDidUpdate(prevProps) {
+        if (this.props.pointOfInterest !== prevProps.pointOfInterest) {
+            this.fetchData(this.props.firstAddress, this.props.secondAddress)
+        }
     }
     
     // sets the bounds of the map around the business markers
@@ -245,20 +253,19 @@ class MapContainer extends Component {
         return (
             <div>
                 {/* uses Material UI GridList to organize the UI into grids */}
-                <GridList cellHeight={500} cols={2} style={{margin: 0}}>
-                    <MapWithAMarker
+                <GridList cellHeight={580} cols={2} style={{margin: 0}}>
+                    {this.props.loading ? <h3>Loading...</h3> : <MapWithAMarker
                         googleMapURL={`https://maps.googleapis.com/maps/api/js?key=${API_KEY}&v=3.exp&libraries=geometry,drawing,places`}
                         loadingElement={<div style={{ height: `100%` }} />}
-                        containerElement={<div style={{ height: `500px`, width: `500px` }} />}
+                        containerElement={<div style={{ height: `580px`, width: `50%` }} />}
                         mapElement={<div style={{ height: `100%` }} />}
                         onMapMounted={this.handleMapMounted}
-                    />
-                    <GridList cellHeight={500}>
-                        <BusinessesContainer businesses={this.props.businesses} />
-                    </GridList>
+                    />}
                 </GridList>
-                {/* <Map /> */}
-                {/* BusinessContainer should render here */}
+                <GridList cellHeight={580}>
+                    <BusinessesContainer businesses={this.props.businesses} />
+                </GridList>
+                
             </div>
         )
     }
@@ -270,7 +277,8 @@ const mapStateToProps = state => {
         secondAddress: state.secondAddress,
         transitMode: state.transitMode,
         pointOfInterest: state.pointOfInterest,
-        businesses: state.businesses
+        businesses: state.businesses,
+        loading: state.loading
     }
 }
 

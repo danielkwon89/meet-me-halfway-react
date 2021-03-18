@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export const fetchRestaurants = (searchValues) => {
   return (dispatch) => {
-    dispatch({ type: 'LOADING_RESTAURANTS' });
+    // dispatch({ type: 'LOADING_RESTAURANTS' });
     axios.post('http://localhost:3000/search', {
         term: searchValues.term,
         latitude: searchValues.latitude,

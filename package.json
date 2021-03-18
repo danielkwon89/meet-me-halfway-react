@@ -15,6 +15,7 @@
     "google-polyline": "^1.0.3",
     "polyline-midpoint": "^1.0.0",
     "react": "^17.0.1",
+    "react-async-script-loader": "^0.3.0",
     "react-dom": "^17.0.1",
     "react-geocode": "^0.2.3",
     "react-google-autocomplete": "^1.2.6",

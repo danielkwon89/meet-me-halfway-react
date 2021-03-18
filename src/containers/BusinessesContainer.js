@@ -96,7 +96,17 @@ class BusinessesContainer extends Component {
                                     {business.location.address1 || ""} {business.location.address2 || ""}{business.location.address3 || ""} {business.location.city} {business.location.zip_code}
                                     <br/>
                                     {business.categories.map(category => {
-                                        return business.categories.indexOf(category) === business.categories.length-1 ? `${category.title}` : `${category.title}, `
+                                        return business.categories.indexOf(category) === business.categories.length-1 ? <a onClick={(e) => 
+                                            {
+                                                e.stopPropagation()
+                                                this.props.dispatch({type: "NEW_SEARCH", category: category.title})
+                                            }
+                                        }>{category.title}</a> : <a onClick={(e) => 
+                                            {
+                                                e.stopPropagation()
+                                                this.props.dispatch({type: "NEW_SEARCH", category: category.title})
+                                            }
+                                        }>{category.title}{", "}</a>
                                     }
                                     )}
                                     <br/>
