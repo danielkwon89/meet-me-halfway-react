@@ -11,11 +11,54 @@ import GridList from '@material-ui/core/GridList';
 // icon imports
 import midpointLogo from '../icons/midpointLogo.png';
 import mapMarker from '../icons/mapMarker.png';
+import icon_1 from '../icons/icon_1.png';
+import icon_2 from '../icons/icon_2.png';
+import icon_3 from '../icons/icon_3.png';
+import icon_4 from '../icons/icon_4.png';
+import icon_5 from '../icons/icon_5.png';
+import icon_6 from '../icons/icon_6.png';
+import icon_7 from '../icons/icon_7.png';
+import icon_8 from '../icons/icon_8.png';
+import icon_9 from '../icons/icon_9.png';
+import icon_10 from '../icons/icon_10.png';
+import icon_11 from '../icons/icon_11.png';
+import icon_12 from '../icons/icon_12.png';
+import icon_13 from '../icons/icon_13.png';
+import icon_14 from '../icons/icon_14.png';
+import icon_15 from '../icons/icon_15.png';
+import icon_16 from '../icons/icon_16.png';
+import icon_17 from '../icons/icon_17.png';
+import icon_18 from '../icons/icon_18.png';
+import icon_19 from '../icons/icon_19.png';
+import icon_20 from '../icons/icon_20.png';
 
 const API_KEY = `${process.env.REACT_APP_API_KEY}`
 
 var polyline = require( 'google-polyline' )
 var midpoint = require('polyline-midpoint')
+
+const iconObj = {
+    icon_1: icon_1,
+    icon_2: icon_2,
+    icon_3: icon_3,
+    icon_4: icon_4,
+    icon_5: icon_5,
+    icon_6: icon_6,
+    icon_7: icon_7,
+    icon_8: icon_8,
+    icon_9: icon_9,
+    icon_10: icon_10,
+    icon_11: icon_11,
+    icon_12: icon_12,
+    icon_13: icon_13,
+    icon_14: icon_14,
+    icon_15: icon_15,
+    icon_16: icon_16,
+    icon_17: icon_17,
+    icon_18: icon_18,
+    icon_19: icon_19,
+    icon_20: icon_20 
+}
 
 class MapContainer extends Component {
 
@@ -169,14 +212,21 @@ class MapContainer extends Component {
               />
               {/* rendering map markers for fetched business data */}
               {this.props.businesses && this.props.businesses.map(business => {
-                  return <Marker 
-                    position={{ lat: parseFloat(`${business.coordinates.latitude}`), lng: parseFloat(`${business.coordinates.longitude}`)}}
-                    onClick={() => {
-                            this.props.dispatch({type: "SELECTED_BUSINESS", business: business})
-                            this.props.dispatch({type: "RENDER_BUSINESS"})
+                  const numberedIcon = `icon_${this.props.businesses.indexOf(business) + 1}`
+                  return (
+                    <Marker 
+                        icon={new window.google.maps.MarkerImage(
+                            iconObj[numberedIcon], null, null, null, 
+                            new window.google.maps.Size(35, 35)
+                        )}
+                        position={{ lat: parseFloat(`${business.coordinates.latitude}`), lng: parseFloat(`${business.coordinates.longitude}`)}}
+                        onClick={() => {
+                                this.props.dispatch({type: "SELECTED_BUSINESS", business: business})
+                                this.props.dispatch({type: "RENDER_BUSINESS"})
+                            }
                         }
-                    }
-                  />
+                    />
+                  )
               })}
               {/* rendering polyline from address A to address B */}
               <Polyline 
@@ -203,7 +253,6 @@ class MapContainer extends Component {
                         mapElement={<div style={{ height: `100%` }} />}
                         onMapMounted={this.handleMapMounted}
                     />
-                    {/* TODO: try to render BusinessContainer in the GridList and pass down the fetched businesses as props to BusinessContainer for rendering */}
                     <GridList cellHeight={500}>
                         <BusinessesContainer businesses={this.props.businesses} />
                     </GridList>

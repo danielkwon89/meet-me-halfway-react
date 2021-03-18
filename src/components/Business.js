@@ -11,19 +11,57 @@ import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
-import CardActions from '@material-ui/core/CardActions';
-import Collapse from '@material-ui/core/Collapse';
-import Avatar from '@material-ui/core/Avatar';
-import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
-import { red } from '@material-ui/core/colors';
 import { Button } from '@material-ui/core';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
-import Grid from '@material-ui/core/Grid';
+
+// icon imports
+import icon_1 from '../icons/icon_1.png';
+import icon_2 from '../icons/icon_2.png';
+import icon_3 from '../icons/icon_3.png';
+import icon_4 from '../icons/icon_4.png';
+import icon_5 from '../icons/icon_5.png';
+import icon_6 from '../icons/icon_6.png';
+import icon_7 from '../icons/icon_7.png';
+import icon_8 from '../icons/icon_8.png';
+import icon_9 from '../icons/icon_9.png';
+import icon_10 from '../icons/icon_10.png';
+import icon_11 from '../icons/icon_11.png';
+import icon_12 from '../icons/icon_12.png';
+import icon_13 from '../icons/icon_13.png';
+import icon_14 from '../icons/icon_14.png';
+import icon_15 from '../icons/icon_15.png';
+import icon_16 from '../icons/icon_16.png';
+import icon_17 from '../icons/icon_17.png';
+import icon_18 from '../icons/icon_18.png';
+import icon_19 from '../icons/icon_19.png';
+import icon_20 from '../icons/icon_20.png';
+
+const iconObj = {
+    icon_1: icon_1,
+    icon_2: icon_2,
+    icon_3: icon_3,
+    icon_4: icon_4,
+    icon_5: icon_5,
+    icon_6: icon_6,
+    icon_7: icon_7,
+    icon_8: icon_8,
+    icon_9: icon_9,
+    icon_10: icon_10,
+    icon_11: icon_11,
+    icon_12: icon_12,
+    icon_13: icon_13,
+    icon_14: icon_14,
+    icon_15: icon_15,
+    icon_16: icon_16,
+    icon_17: icon_17,
+    icon_18: icon_18,
+    icon_19: icon_19,
+    icon_20: icon_20 
+}
 
 class Business extends Component {
     render() {
-        // console.log(this.props.business)
         return (
             <Card>
                 <Button
@@ -34,7 +72,17 @@ class Business extends Component {
                     >Back To List
                 </Button>
                 <CardHeader
-                    title={this.props.business.name}
+                    title={
+                        <>
+                            <img 
+                                src={iconObj[this.props.numberedIcon]} 
+                                width="30" 
+                                height="30"
+                            />
+                            {" "}
+                            {this.props.business.name}
+                        </>
+                        }
                     subheader={
                         <>
                             <Rating

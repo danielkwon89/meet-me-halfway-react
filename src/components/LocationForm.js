@@ -28,6 +28,10 @@ class LocationForm extends Component {
         }
     }
 
+    componentDidMount() {
+        this.props.renderBusinesses()
+    }
+
     handleChange = event => {
         this.setState({
             [event.target.name]: event.target.value
@@ -183,7 +187,8 @@ class LocationForm extends Component {
 
 const mapDispatchToProps = dispatch => {
     return {
-        addAddresses: (state) => dispatch({ type: 'ADD_ADDRESSES', state })
+        addAddresses: (state) => dispatch({ type: 'ADD_ADDRESSES', state }),
+        renderBusinesses: () => dispatch({type: 'RENDER_BUSINESSES'})
     }
 }
 
