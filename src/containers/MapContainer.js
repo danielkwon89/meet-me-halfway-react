@@ -7,6 +7,7 @@ import { fetchRestaurants } from '../actions/yelpActions';
 
 // ui imports
 import GridList from '@material-ui/core/GridList';
+import Grid from '@material-ui/core/Grid';
 
 // icon imports
 import midpointLogo from '../icons/midpointLogo.png';
@@ -261,9 +262,9 @@ class MapContainer extends Component {
                         mapElement={<div style={{ height: `100%` }} />}
                         onMapMounted={this.handleMapMounted}
                     />}
-                </GridList>
-                <GridList cellHeight={580}>
-                    <BusinessesContainer businesses={this.props.businesses} />
+                    <GridList cellHeight={580}>
+                        <BusinessesContainer businesses={this.props.businesses} />
+                    </GridList>
                 </GridList>
                 
             </div>
