@@ -160,35 +160,7 @@ class MapContainer extends Component {
         }
     }
 
-    // resizeIcon = (markerName, size) => {
-    //     const resizedIcon = new window.google.maps.MarkerImage(
-    //             markerName, 
-    //             null, 
-    //             null, 
-    //             null,
-    //             new window.google.maps.Size(size, size)
-    //         )
-    //     return resizedIcon
-    // }
-
     render() {
-
-        // let resizedMapMarker = this.resizeIcon(mapMarker, 40)
-        // const resizedMapMarker = new window.google.maps.MarkerImage(
-        //     mapMarker, 
-        //     null, 
-        //     null, 
-        //     null,
-        //     new window.google.maps.Size(40, 40)
-        // )
-        // let resizedMidpointLogo = this.resizeIcon(midpointLogo, 65)
-        // const resizedMidpointLogo = new window.google.maps.MarkerImage(
-        //     midpointLogo, 
-        //     null, 
-        //     null, 
-        //     null,
-        //     new window.google.maps.Size(65, 65)
-        // )
 
         // creates a map constant with a polyline and map markers for the first location, second location, midpoint, and business locations
         const MapWithAMarker = withScriptjs(withGoogleMap(props =>
