@@ -10,6 +10,11 @@ import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Avatar from '@material-ui/core/Avatar';
 import Rating from '@material-ui/lab/Rating';
+import { Button } from '@material-ui/core';
+import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
+import FavoriteIcon from '@material-ui/icons/Favorite';
+import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';
+import IconButton from '@material-ui/core/IconButton';
 
 // icon imports
 import icon_1 from '../icons/icon_1.png';
@@ -32,6 +37,7 @@ import icon_17 from '../icons/icon_17.png';
 import icon_18 from '../icons/icon_18.png';
 import icon_19 from '../icons/icon_19.png';
 import icon_20 from '../icons/icon_20.png';
+import { ThumbUpAlt } from '@material-ui/icons';
 
 const iconObj = {
     icon_1: icon_1,
@@ -58,11 +64,19 @@ const iconObj = {
 
 class BusinessesContainer extends Component {
 
+    constructor(props){
+        super(props)
+        this.state = {
+
+        }
+    }
+
     renderBusinesses = businesses => {
         if (businesses) {
             return businesses.map(business => {
                 
                 const numberedIcon = `icon_${this.props.businesses.indexOf(business) + 1}`
+                const businessNumber = this.props.businesses.indexOf(business) + 1
 
                 return (
                 <>
@@ -117,6 +131,25 @@ class BusinessesContainer extends Component {
                                         readOnly
                                     />
                                     {" "}{business.review_count}{" "}{business.review_count === 1 ? "review" : "reviews"}
+                                    <IconButton>
+                                        <FavoriteIcon
+                                            fontSize="small"
+                                            color="secondary"
+                                            className={business.name}
+                                            onClick={(e) => {
+                                                    e.stopPropagation()
+                                                    const value = this.state[business.name] === undefined ? 1 : this.state[business.name] + 1
+                                                    console.log(value)
+                                                    this.setState({
+                                                        ...this.state,
+                                                        [business.name]: value
+                                                    })
+                                                }
+                                            }
+                                        />
+                                    </IconButton>
+                                    {this.state[business.name]}{" "}
+                                    {this.state[business.name] ? this.state[business.name] === 1 ? "like" : "likes" : null}
                                 </>
                             }
                         />

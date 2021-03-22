@@ -61,6 +61,7 @@ const iconObj = {
 }
 
 class Business extends Component {
+    
     render() {
         return (
             <Card style={{height: "100%"}}>
